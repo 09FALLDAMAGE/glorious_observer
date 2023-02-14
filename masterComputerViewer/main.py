@@ -253,7 +253,19 @@ def modes(event):
 
 
 def pitDisplay():
-    canvas.create_text(700, 300, text='Drive Type', font=('Arial', 15))
+    # finals
+    canvas.create_text(700, 200, text='Drive Type', font=('Arial', 15))
+
+    canvas.create_text(700, 275, text='Weight', font=('Arial', 15))
+
+    canvas.create_text(700, 350, text='Size', font=('Arial', 15))
+
+
+    canvas.create_text(700, 225, text='Tank', font=('Arial', 15))
+
+    canvas.create_text(700, 300, text='110 lbs', font=('Arial', 15))
+
+    canvas.create_text(700, 375, text='2ft, 25% of Charger', font=('Arial', 15))
 
 
 teamImage(308)
