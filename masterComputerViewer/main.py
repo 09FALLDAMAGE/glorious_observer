@@ -20,31 +20,25 @@ root.geometry(f"{geo[0]}x{geo[1]}")
 canvas = Canvas(root, width=geo[0], height=geo[1])
 canvas.pack()
 
-
 data1 = {'Match': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
          'Total Points': [25, 15, 13, 23, 17, 46, 10, 8, 6, 0]
          }
-
 
 data2 = {'Match': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
          'Auto Points': [25, 15, 13, 23, 17, 46, 10, 8, 6, 0]
          }
 
-
 data3 = {'Match': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
          'TeleCubes': [25, 15, 13, 23, 17, 46, 10, 8, 6, 0]
          }
-
 
 data4 = {'Match': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
          'TeleCones': [25, 15, 13, 23, 17, 46, 10, 8, 6, 0]
          }
 
-
 data5 = {'Match': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
          'Endgame': [25, 15, 13, 23, 17, 46, 10, 8, 6, 0]
          }
-
 
 options = [
     "Total Match Points",
@@ -62,7 +56,6 @@ global endGame
 
 
 def thing(event):
-
     df1 = pd.DataFrame(data1)
 
     df2 = pd.DataFrame(data2)
@@ -72,7 +65,6 @@ def thing(event):
     df4 = pd.DataFrame(data4)
 
     df5 = pd.DataFrame(data5)
-
 
     if (event == options[0]):
         try:
@@ -206,6 +198,7 @@ def kill():
     cones.get_tk_widget().destroy()
     endGame.get_tk_widget().destroy()
 
+
 def pointers():
     def callback(e):
         x = e.x
@@ -230,19 +223,42 @@ def teamImage(tM):
 
     label1.place(x=100, y=30)
 
+
 def teamtitles(tM):
-    canvas.create_text(geo[0]/2, 40, text=f'Team {tM}', font=('Arial', 25))
+    canvas.create_text(geo[0] / 2, 40, text=f'Team {tM}', font=('Arial', 25))
     canvas.create_text(geo[0] / 2, 90, text=f'The Monsters', font=('Arial', 25))
+
 
 def modes(event):
     if (event == mode[0]):
-        canvas.create_rectangle(0, 0, geo[0], geo[1], fill='grey')
+        try:
+            canvas.delete('backGround')
+
+            canvas.create_rectangle(0, 0, geo[0], geo[1], tags='backGround', fill='grey')
+            canvas.lower('backGround')
+        except:
+            bg = canvas.create_rectangle(0, 0, geo[0], geo[1], tags='backGround', fill='grey')
+            canvas.lower('backGround')
+
 
     elif (event == mode[1]):
-        canvas.create_rectangle(0, 0, geo[0], geo[1], fill='white')
+        try:
+            canvas.delete('backGround')
+
+            canvas.create_rectangle(0, 0, geo[0], geo[1], tags='backGround', fill='white')
+            canvas.lower('backGround')
+        except:
+            bg = canvas.create_rectangle(0, 0, geo[0], geo[1], tags='backGround', fill='white')
+            canvas.lower('backGround')
+
 
 def pitDisplay():
     canvas.create_text(700, 300, text='Drive Type', font=('Arial', 15))
+
+
+teamImage(308)
+teamtitles(308)
+pitDisplay()
 
 variable = tk.StringVar()
 variable.set(options[0])
@@ -257,7 +273,6 @@ modeVar.set(mode[0])
 modeDrop = tk.OptionMenu(root, modeVar, *mode, command=modes)
 modeDrop.pack()
 modeDrop.place(x=15, y=15, in_=root)
-
 
 teamImage(308)
 teamtitles(308)
