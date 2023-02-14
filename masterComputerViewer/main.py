@@ -7,9 +7,14 @@ from tkinter import Canvas
 
 root = tk.Tk()
 
-geo = [1920, 1080]
+geo = [1535, 840]
 
 graphPos = [60, 400]
+
+mode = [
+    "Dark",
+    "Light"
+]
 
 root.geometry(f"{geo[0]}x{geo[1]}")
 canvas = Canvas(root, width=geo[0], height=geo[1])
@@ -201,6 +206,14 @@ def kill():
     cones.get_tk_widget().destroy()
     endGame.get_tk_widget().destroy()
 
+def pointers():
+    def callback(e):
+        x = e.x
+        y = e.y
+        print("Pointer is currently at %d, %d" % (x, y))
+
+    root.bind('<Motion>', callback)
+
 
 def teamImage(tM):
     image = Image.open(f"{tM}.jpg")
@@ -218,8 +231,18 @@ def teamImage(tM):
     label1.place(x=100, y=30)
 
 def teamtitles(tM):
-    canvas.create_text(geo[0]/2 - 210, 40, text=f'Team {tM}', font=('Arial', 25))
+    canvas.create_text(geo[0]/2, 40, text=f'Team {tM}', font=('Arial', 25))
+    canvas.create_text(geo[0] / 2, 90, text=f'The Monsters', font=('Arial', 25))
 
+def modes(event):
+    if (event == mode[0]):
+        canvas.create_rectangle(0, 0, geo[0], geo[1], fill='grey')
+
+    elif (event == mode[1]):
+        canvas.create_rectangle(0, 0, geo[0], geo[1], fill='white')
+
+def pitDisplay():
+    canvas.create_text(700, 300, text='Drive Type', font=('Arial', 15))
 
 variable = tk.StringVar()
 variable.set(options[0])
@@ -228,11 +251,17 @@ drop = tk.OptionMenu(root, variable, *options, command=thing)
 drop.pack()
 drop.place(x=250, y=360, in_=root)
 
+modeVar = tk.StringVar()
+modeVar.set(mode[0])
+
+modeDrop = tk.OptionMenu(root, modeVar, *mode, command=modes)
+modeDrop.pack()
+modeDrop.place(x=15, y=15, in_=root)
+
 
 teamImage(308)
 teamtitles(308)
+pitDisplay()
 
-canvas.create_rectangle(310, 200, 350, 175, fill='blue')
-
-
+pointers()
 root.mainloop()
