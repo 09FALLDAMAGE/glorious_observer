@@ -5,8 +5,6 @@ from PIL import Image, ImageTk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from tkinter import Canvas
 
-root = tk.Tk()
-
 geo = [1535, 840]
 
 graphPos = [60, 400]
@@ -20,16 +18,40 @@ root.geometry(f"{geo[0]}x{geo[1]}")
 canvas = Canvas(root, width=geo[0], height=geo[1])
 canvas.pack()
 
+
+class mainPage(tk.Tk):
+    def __init__(self):
+        super(mainPage, self).__init__()
+
+        geo = [1535, 840]
+
+        graphPos = [60, 400]
+
+        mode = [
+            "Dark",
+            "Light"
+        ]
+
+        self.geometry(f"{geo[0]}x{geo[1]}")
+        self.canvas = Canvas(self, width=geo[0], height=geo[1])
+        canvas.pack()
+
+    def newFunc(self):
+        self.canvas
+
+    canvas.c
+
+
 data1 = {'Match': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-         'Total Points': [12, 12, 25, 23, 14, 35, 12, 18, 17, 0]
+         'Total Points': [25, 15, 13, 23, 17, 46, 10, 8, 6, 0]
          }
 
 data2 = {'Match': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-         'Auto Points': [25, 15, 13, 23, 17, 46, 10, 8, 9, 0]
+         'Auto Points': [25, 15, 13, 23, 17, 46, 10, 8, 6, 0]
          }
 
 data3 = {'Match': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-         'TeleCubes': [17, 13, 11, 5, 15, 32, 5, 8, 6, 0]
+         'TeleCubes': [25, 15, 13, 23, 17, 46, 10, 8, 6, 0]
          }
 
 data4 = {'Match': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
@@ -37,7 +59,7 @@ data4 = {'Match': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
          }
 
 data5 = {'Match': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-         'Endgame': [10, 10, 10, 5, 10, 10, 10, 0, 0, 0]
+         'Endgame': [25, 15, 13, 23, 17, 46, 10, 8, 6, 0]
          }
 
 options = [
@@ -45,7 +67,7 @@ options = [
     "Auto Points",
     "TeleCubes",
     "TeleCones",
-    "Endgame Points"
+    "Endgame Balance"
 ]
 
 global totals
@@ -259,7 +281,6 @@ def pitDisplay():
     canvas.create_text(700, 275, text='Weight', font=('Arial', 15))
 
     canvas.create_text(700, 350, text='Size', font=('Arial', 15))
-
 
     canvas.create_text(700, 225, text='Tank', font=('Arial', 15))
 
