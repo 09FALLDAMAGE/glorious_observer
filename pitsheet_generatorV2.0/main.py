@@ -399,11 +399,11 @@ def bases(padding, segmentHeight, segmentWidth, segmentPadding, topPadding, offs
 
         for x in range(3):
             if (x == 0):
-                localtext = 'Low'
+                localtext = 'Min'
             elif (x == 1):
-                localtext = 'Med'
+                localtext = 'Mean'
             elif (x == 2):
-                localtext = 'High'
+                localtext = 'Max'
 
             canvas.create_text(
                 padding + segmentPadding + offset + teamBoxOffsetx + (teamBoxWidth * x) + (teamBoxWidth / 2),
@@ -492,11 +492,11 @@ def teamcard(padding, segmentHeight, segmentWidth, segmentPadding, topPadding, o
 
 def scorePredictor():
     canvas.create_rectangle(300, 70, 400, 100, fill='#42e3f5')
-    canvas.create_text(350, 85, text=f'{random.randint(0, 350)}|{random.randint(0, 350)}|{random.randint(0, 350)}',
+    canvas.create_text(350, 85, text=f'{random.randint(0, 100)}|{random.randint(0, 100)}|{random.randint(0, 100)}',
                        font=('Arial', 15))
 
     canvas.create_rectangle(620, 70, 720, 100, fill='red')
-    canvas.create_text(670, 85, text=f'{random.randint(0, 350)}|{random.randint(0, 350)}|{random.randint(0, 350)}',
+    canvas.create_text(670, 85, text=f'{random.randint(0, 100)}|{random.randint(0, 100)}|{random.randint(0, 100)}',
                        font=('Arial', 15))
 
 
@@ -532,6 +532,8 @@ def main(teams, matchNumber):
     teamcard(40, 225, 225, 10, 50, 700, 70, 20, 20, 20, 40, 40, '#add8e6', '#42e3f5', teams)
 
     bars('#42e3f5', 'red', matchData)
+
+    scorePredictor()
 
 
 nums = [[1481, 1481, 1481], [1481, 1481, 1481]]
