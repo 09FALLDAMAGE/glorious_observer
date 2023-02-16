@@ -468,10 +468,13 @@ def teamcard(padding, segmentHeight, segmentWidth, segmentPadding, topPadding, o
              teamBoxInitOffsetY, teamBoxHeight, teamBoxWidth, teamBoxItY, color, color2, teamNums):
     makeDict(teamNums)
     for y in range(4):
-
+        firstString = constants.prefixes[y]
         for i in range(3):
+            teamDict = makeDict(teamNums[i])
 
             for x in range(3):
+                secondString = constants.suffixes[x]
+
                 if y == 0:
                     percent = '%'
                 elif y == 3:
@@ -481,13 +484,13 @@ def teamcard(padding, segmentHeight, segmentWidth, segmentPadding, topPadding, o
                 canvas.create_text(
                     padding + segmentPadding + offset + teamBoxOffsetx + (teamBoxWidth * x) + (teamBoxWidth / 2),
                     ((segmentHeight + segmentPadding) * i) + topPadding + teamBoxOffsety + teamBoxInitOffsetY + (
-                            y * teamBoxItY) + (teamBoxHeight / 2), text=f'{random.randint(0, 50)}{percent}',
+                            y * teamBoxItY) + (teamBoxHeight / 2), text=f'{teamDict[f"{firstString}{secondString}"]}{percent}',
                     font=('Arial', 12))
 
     for i in range(3):
         canvas.create_text(padding + segmentPadding + offset + 112.5,
                            ((segmentHeight + segmentPadding) * i) + topPadding + segmentHeight - 15,
-                           text=random.randint(0, 9999), font=('Arial', 12))
+                           text=teamNums[i], font=('Arial', 12))
 
 
 def scorePredictor():
@@ -524,12 +527,12 @@ def main(teams, matchNumber):
     # blue
     bases(40, 225, 225, 10, 50, 0, 70, 20, 20, 20, 40, 40, '#add8e6', '#42e3f5')
 
-    teamcard(40, 225, 225, 10, 50, 0, 70, 20, 20, 20, 40, 40, '#add8e6', '#42e3f5', teams)
+    teamcard(40, 225, 225, 10, 50, 0, 70, 20, 20, 20, 40, 40, '#add8e6', '#42e3f5', teams[0])
 
     # red
     bases(40, 225, 225, 10, 50, 700, 70, 20, 20, 20, 40, 40, '#ffaaab', 'red')
 
-    teamcard(40, 225, 225, 10, 50, 700, 70, 20, 20, 20, 40, 40, '#add8e6', '#42e3f5', teams)
+    teamcard(40, 225, 225, 10, 50, 700, 70, 20, 20, 20, 40, 40, '#add8e6', '#42e3f5', teams[1])
 
     bars('#42e3f5', 'red', matchData)
 

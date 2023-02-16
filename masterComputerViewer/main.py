@@ -268,9 +268,6 @@ def pitDisplay():
     canvas.create_text(700, 375, text='2ft, 25% of Charger', font=('Arial', 15))
 
 
-teamImage(308)
-teamtitles(308)
-pitDisplay()
 
 variable = tk.StringVar()
 variable.set(options[0])

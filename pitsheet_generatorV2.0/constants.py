@@ -27,3 +27,13 @@ class constants:
 
     z1 = 2
     # low cone/cube point value teleop
+
+    global prefixes
+
+    prefixes = ['Auton Point ', 'Teleop Cubes ', 'Teleop Cubes ', 'Endgame Point ']
+    #dictionary prefixes used in teamcard
+
+    global suffixes
+
+    suffixes = ['Low', 'Avg', 'High']
+    # dictionary suffixes used in teamcard
