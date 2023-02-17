@@ -493,13 +493,23 @@ def teamcard(padding, segmentHeight, segmentWidth, segmentPadding, topPadding, o
                            text=teamNums[i], font=('Arial', 12))
 
 
-def scorePredictor():
+def totalCalc(teams, type):
+    a = 0
+    for j in range(3):
+        for k in range(4):
+            a += makeDict(teams[j])[f'{constants.prefixes[k]}{type}']
+
+    return a
+
+def scorePredictor(teams):
+    totalCalc(teams[0], 'Low')
+
     canvas.create_rectangle(300, 70, 400, 100, fill='#42e3f5')
-    canvas.create_text(350, 85, text=f'{random.randint(0, 100)}|{random.randint(0, 100)}|{random.randint(0, 100)}',
+    canvas.create_text(350, 85, text=f"{totalCalc(teams[0], 'Low')}|{totalCalc(teams[0], 'Avg')}|{totalCalc(teams[0], 'High')}",
                        font=('Arial', 15))
 
     canvas.create_rectangle(620, 70, 720, 100, fill='red')
-    canvas.create_text(670, 85, text=f'{random.randint(0, 100)}|{random.randint(0, 100)}|{random.randint(0, 100)}',
+    canvas.create_text(670, 85, text=f"{totalCalc(teams[1], 'Low')}|{totalCalc(teams[0], 'Avg')}|{totalCalc(teams[0], 'High')}",
                        font=('Arial', 15))
 
 
@@ -536,13 +546,11 @@ def main(teams, matchNumber):
 
     bars('#42e3f5', 'red', matchData)
 
-    scorePredictor()
+    scorePredictor(teams)
 
 
 nums = [[1481, 1481, 1481], [1481, 1481, 1481]]
 
 main(nums, 10)
-
-pointers()
 
 root.mainloop()

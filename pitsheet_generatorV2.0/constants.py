@@ -31,7 +31,7 @@ class constants:
     global prefixes
 
     prefixes = ['Auton Point ', 'Teleop Cubes ', 'Teleop Cubes ', 'Endgame Point ']
-    #dictionary prefixes used in teamcard
+    # dictionary prefixes used in teamcard
 
     global suffixes
 
