@@ -16,7 +16,6 @@ def submit():
     JsonReq = json_var.get()
 
     match_var.set("")
-    root.mainloop()
 
 
 

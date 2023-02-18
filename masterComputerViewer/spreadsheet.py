@@ -7,11 +7,12 @@ from tkinter import messagebox
 win=Tk()
 
 # Set the geometry
-win.geometry("700x350")
+win.geometry("700x700")
 
 # Add a Scrollbar(horizontal)
 h=Scrollbar(win, orient='horizontal')
-h.pack(side=BOTTOM, fill='x')
+h.pack(fill='x')
+h.place(x=100, y=500, width=200)
 
 # Add a text widget
 text=Text(win, font=("Calibri, 16"), wrap=NONE, xscrollcommand=h.set)

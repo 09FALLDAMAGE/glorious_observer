@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from PIL import Image, ImageTk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from tkinter import Canvas
+from tkinter import Canvas, Frame
 
 root = tk.Tk()
 
@@ -19,6 +19,7 @@ mode = [
 root.geometry(f"{geo[0]}x{geo[1]}")
 canvas = Canvas(root, width=geo[0], height=geo[1])
 canvas.pack()
+
 
 data1 = {'Match': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
          'Total Points': [12, 12, 25, 23, 14, 35, 12, 18, 17, 0]
@@ -265,12 +266,15 @@ def pitDisplay():
 
     canvas.create_text(700, 300, text='110 lbs', font=('Arial', 15))
 
-    canvas.create_text(700, 375, text='2ft, 25% of Charger', font=('Arial', 15))
+    canvas.create_text(700, 375, text='2ft x 2ft, 25% of Charger', font=('Arial', 15))
+
+
 
 
 
 variable = tk.StringVar()
 variable.set(options[0])
+thing(options[0])
 
 drop = tk.OptionMenu(root, variable, *options, command=thing)
 drop.pack()
@@ -287,5 +291,7 @@ teamImage(308)
 teamtitles(308)
 pitDisplay()
 
+
 pointers()
+
 root.mainloop()
