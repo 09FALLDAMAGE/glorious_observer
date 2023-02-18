@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from PIL import Image, ImageTk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from tkinter import Canvas
+from errorHandeler import *
 
 
 class mainPage(tk.Tk):

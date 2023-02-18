@@ -1,3 +1,4 @@
+from errorHandeler import *
 from constants import *
 import json
 
@@ -25,7 +26,7 @@ class jsons:
                     total.append(int(jsonFile[teamMatchAndNumber][dataName]))
                 else:
                     print(valueNames)
-                    print("you failed, try again, idk")
+                    returnWarning('Possible wrong SCHEMA, try new json PATH')
                     return 0
         # appends the value(s) of a chosen data type into an array for usage later
 
@@ -34,8 +35,8 @@ class jsons:
 
     def getDataStr(self, dataName):
         # does the exact same thing as the previous one but this time it's for string values not integer values
-        tmpData = open('json.json')
-        jsonFile = json.loads(tmpData.read());
+        tmpData = open(constants.jsonName)
+        jsonFile = json.loads(tmpData.read())
         names = jsonFile.keys()
 
         total = []
@@ -326,8 +327,46 @@ class jsons:
             team1["Endgame Point High"] = "null"
             # populates the dictionary team1
 
+            returnError('NO VALID JSON VALUES')
+
             return team1
         # returns the dictionary team1 to makeDict
 
+    def makeList(self, dataName):
+        try:
+            tmpData = open(constants.jsonName)
+            jsonFile = json.loads(tmpData.read())
+            names = jsonFile.keys()
+            # turns the json file into a dictionary the python can interact with
+            list = []
+            # creates a blank array for total (I'm still not exactly sure what total does anymore, I think it gets an array of the values or soemthing)
+
+            maxMatches = 100
+            # set the maximum matches
+
+            for i in range(1, maxMatches):
+                teamMatchAndNumber = f"{i}_{self}"
+                if teamMatchAndNumber in names:
+                    valueNames = jsonFile[teamMatchAndNumber].keys()
+                    if dataName in valueNames:
+                        list.append(jsonFile[teamMatchAndNumber][dataName])
+                    else:
+                        print(valueNames)
+                        returnWarning('Possible wrong SCHEMA, try new json PATH')
+                        return 0
+            # appends the value(s) of a chosen data type into an array for usage later
+
+            return list
+            # returns the array total to the function
+        except:
+            returnError('NO VALID JSON VALUES')
+
+    def matches(self):
+        matches = len(self.getData("Team Number"))
+        return matches
+
     def printDict(self):
         print(self.makeDict())
+
+    def printMatches(self, ValID):
+        print(self.makeList(ValID))
