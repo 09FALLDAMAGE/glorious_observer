@@ -26,7 +26,7 @@ class jsons:
                     total.append(int(jsonFile[teamMatchAndNumber][dataName]))
                 else:
                     print(valueNames)
-                    returnWarning('Possible wrong SCHEMA, try new json PATH')
+                    errorUpdate(1, 'Possible wrong SCHEMA, try new json PATH')
                     return 0
         # appends the value(s) of a chosen data type into an array for usage later
 
@@ -327,8 +327,7 @@ class jsons:
             team1["Endgame Point High"] = "null"
             # populates the dictionary team1
 
-            returnError('NO VALID JSON VALUES')
-
+            errorUpdate(0, "NO VALID JSON VALUES")
             return team1
         # returns the dictionary team1 to makeDict
 
@@ -352,14 +351,15 @@ class jsons:
                         list.append(jsonFile[teamMatchAndNumber][dataName])
                     else:
                         print(valueNames)
-                        returnWarning('Possible wrong SCHEMA, try new json PATH')
+                        errorUpdate(1, 'Possible wrong SCHEMA, try new version')
                         return 0
             # appends the value(s) of a chosen data type into an array for usage later
 
             return list
             # returns the array total to the function
         except:
-            returnError('NO VALID JSON PATH')
+            errorUpdate(1, "NO VALID JSON PATH")
+
 
     def matches(self):
         matches = len(self.getData("Team Number"))
