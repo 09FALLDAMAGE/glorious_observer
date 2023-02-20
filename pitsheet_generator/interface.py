@@ -1,4 +1,5 @@
 import tkinter as tk
+from requestHandeler import *
 
 
 class interface(tk.Tk):
@@ -7,6 +8,8 @@ class interface(tk.Tk):
 
         self.geometry("250x100")
 
+        self.na
+
         self.match_var = tk.StringVar()
         self.json_var = tk.StringVar()
 
@@ -14,9 +17,9 @@ class interface(tk.Tk):
         matchReq = self.match_var.get()
         JsonReq = self.json_var.get()
 
-        self.match_var.set("")
+        requests().start(matchReq, JsonReq)
 
-        print('submitted')
+        self.match_var.set("")
 
     def createGUI(self):
         match_label = tk.Label(self, text='Match', font=('calibre', 10, 'bold'))
@@ -28,6 +31,8 @@ class interface(tk.Tk):
         json_entry = tk.Entry(self, textvariable=self.json_var, font=('calibre', 10, 'normal'))
 
         sub_btn = tk.Button(self, text='generate', command=self.submit)
+
+        json_entry.insert(0, "json.json")
 
         match_label.grid(row=0, column=0)
         match_entry.grid(row=0, column=1)

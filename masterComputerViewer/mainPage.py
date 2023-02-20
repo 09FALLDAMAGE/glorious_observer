@@ -13,6 +13,8 @@ class mainPage(tk.Tk):
 
         self.geo = [1535, 840]
 
+        self.title(f"Master Viewer V{'1.0'}")
+
         self.graphPos = [60, 400]
 
         self.mode = [

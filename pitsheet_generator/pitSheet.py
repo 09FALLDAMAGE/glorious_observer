@@ -15,6 +15,8 @@ class generatePitSheet(tk.Tk):
 
         self.inkConservationMode = False
 
+        self.title(f"Ronnie's Pit sheet V{'1.0'}")
+
         self.geometry(f"{self.geo[0]}x{self.geo[1]}")
         self.canvas = Canvas(self, width=self.geo[0], height=self.geo[1])
 
