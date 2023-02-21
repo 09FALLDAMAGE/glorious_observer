@@ -8,7 +8,7 @@ class interface(tk.Tk):
 
         self.geometry("250x100")
 
-        self.na
+        self.title(f'Sheet UI V{"1.0"}')
 
         self.match_var = tk.StringVar()
         self.json_var = tk.StringVar()

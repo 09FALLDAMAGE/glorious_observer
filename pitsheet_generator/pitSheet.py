@@ -235,6 +235,7 @@ class generatePitSheet(tk.Tk):
 
         if errorHandeler.errorCheck():
             self.mainloop()
+            errorHandeler.returnWarning('Killed Pit sheet')
         else:
             self.destroy()
 

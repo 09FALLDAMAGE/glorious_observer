@@ -20,8 +20,9 @@ class requests:
         for i in range(len(self.dir_list) - 1):
             if self.dir_list[i] == path:
                 self.isValid = True
-            else:
-                errorHandeler.errorUpdate(1, 'not a valid json name')
 
         if self.isValid:
             return True
+        else:
+            errorHandeler.errorUpdate(1, 'not a valid json name')
+            return False
