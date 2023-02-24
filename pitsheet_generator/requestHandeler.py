@@ -1,6 +1,7 @@
 from pitSheet import *
 from errorHandeler import *
 import os
+from constants import *
 
 
 class requests:
@@ -14,13 +15,13 @@ class requests:
 
         if self.isValid:
             print(self.dir_list)
-            generatePitSheet(match, [503, 503, 503], [503, 503, 503]).generateSheet()
+            constants().setJsonName(jsonPath)
+            generatePitSheet(match, [573, 830, 2145], [6570, 453, 7254]).generateSheet()
 
     def checkValid(self, path):
         for i in range(len(self.dir_list) - 1):
             if self.dir_list[i] == path:
                 self.isValid = True
-
         if self.isValid:
             return True
         else:

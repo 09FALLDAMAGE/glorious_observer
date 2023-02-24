@@ -1,5 +1,6 @@
 import tkinter as tk
 from requestHandeler import *
+from constants import *
 
 
 class interface(tk.Tk):
@@ -8,7 +9,7 @@ class interface(tk.Tk):
 
         self.geometry("250x100")
 
-        self.title(f'Sheet UI V{"1.0"}')
+        self.title(f'Sheet UI V{constants.version}')
 
         self.match_var = tk.StringVar()
         self.json_var = tk.StringVar()
@@ -32,7 +33,7 @@ class interface(tk.Tk):
 
         sub_btn = tk.Button(self, text='generate', command=self.submit)
 
-        json_entry.insert(0, "json.json")
+        json_entry.insert(0, constants.jsonName)
 
         match_label.grid(row=0, column=0)
         match_entry.grid(row=0, column=1)

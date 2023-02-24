@@ -2,9 +2,9 @@ import tkinter as tk
 from tkinter import Canvas
 
 import errorHandeler
-import jsonInterpreter
-from constants import *
+from errorHandeler import *
 from jsonInterpreter import *
+from constants import *
 
 
 class generatePitSheet(tk.Tk):
@@ -15,10 +15,11 @@ class generatePitSheet(tk.Tk):
 
         self.inkConservationMode = False
 
-        self.title(f"Ronnie's Pit sheet V{'1.0'}")
+        self.title(f"Ronnie's Pit sheet V{constants.version}")
 
         self.geometry(f"{self.geo[0]}x{self.geo[1]}")
         self.canvas = Canvas(self, width=self.geo[0], height=self.geo[1])
+        self.canvas.pack()
 
         self.canvas.create_rectangle(0, 0, self.geo[0], self.geo[1], fill='white')
 
@@ -28,17 +29,18 @@ class generatePitSheet(tk.Tk):
 
         self.rTeams = RtNS
 
-        self.B1 = jsons(BtNS[0]).makeDict()
+        self.B1 = makeDict(BtNS[0])
 
-        self.B2 = jsons(BtNS[1]).makeDict()
+        self.B2 = makeDict(BtNS[1])
 
-        self.B3 = jsons(BtNS[2]).makeDict()
+        self.B3 = makeDict(BtNS[2])
 
-        self.R1 = jsons(RtNS[0]).makeDict()
+        self.R1 = makeDict(RtNS[0])
 
-        self.R2 = jsons(RtNS[1]).makeDict()
+        self.R2 = makeDict(RtNS[1])
 
-        self.R3 = jsons(RtNS[2]).makeDict()
+        self.R3 = makeDict(RtNS[2])
+
 
     def bases(self, padding, segmentHeight, segmentWidth, segmentPadding, topPadding, offset, teamBoxOffsetx,
               teamBoxOffsety,
@@ -94,7 +96,7 @@ class generatePitSheet(tk.Tk):
                 self.canvas.create_text(
                     padding + segmentPadding + offset + teamBoxOffsetx + (teamBoxWidth * x) + (teamBoxWidth / 2),
                     ((segmentHeight + segmentPadding) * i) + topPadding + teamBoxOffsety + teamBoxInitOffsetY - (
-                            teamBoxHeight / 2), text=localtext, font=(10))
+                            teamBoxHeight / 2), text=localtext, font=('Arial', 13))
 
         for y in range(4):
 
@@ -115,49 +117,47 @@ class generatePitSheet(tk.Tk):
     # def gameCalc():
 
     def bars(self, color, color2, teamDat):
-        try:
-            self.canvas.create_rectangle(310, 200, 310 + teamDat["Auton Points Blue"], 175, fill=color)
-            self.canvas.create_text(700, 177, text=teamDat["Auton Points Blue"], font=('Arial', 15))
+        self.canvas.create_rectangle(310, 200, 310 + (teamDat["Auton Points Blue"] * constants.barMult), 175, fill=color)
+        self.canvas.create_text(700, 177, text=teamDat["Auton Points Blue"], font=('Arial', 15))
 
-            self.canvas.create_rectangle(310, 210, 310 + teamDat["Auton Points Red"], 235, fill=color2)
-            self.canvas.create_text(700, 222.5, text=teamDat["Auton Points Red"], font=('Arial', 15))
+        self.canvas.create_rectangle(310, 210, 310 + (teamDat["Auton Points Red"] * constants.barMult), 235, fill=color2)
+        self.canvas.create_text(700, 222.5, text=teamDat["Auton Points Red"], font=('Arial', 15))
 
-            self.canvas.create_text(517.5, 145, text='Auton Points', font=('Arial', 15))
+        self.canvas.create_text(517.5, 145, text='Auton Points', font=('Arial', 15))
 
-            self.canvas.create_rectangle(310, 200 + 150, 310 + teamDat["Teleop Cubes Blue"], 175 + 150, fill=color)
-            self.canvas.create_text(700, 177 + 150, text=teamDat["Teleop Cubes Blue"], font=('Arial', 15))
+        self.canvas.create_rectangle(310, 200 + 150, 310 + (teamDat["Teleop Cubes Blue"] * constants.barMult), 175 + 150, fill=color)
+        self.canvas.create_text(700, 177 + 150, text=teamDat["Teleop Cubes Blue"], font=('Arial', 15))
 
-            self.canvas.create_rectangle(310, 210 + 150, 310 + teamDat["Teleop Cubes Red"], 235 + 150, fill=color2)
-            self.canvas.create_text(700, 222.5 + 150, text=teamDat["Teleop Cubes Red"], font=('Arial', 15))
+        self.canvas.create_rectangle(310, 210 + 150, 310 + (teamDat["Teleop Cubes Red"] * constants.barMult), 235 + 150, fill=color2)
+        self.canvas.create_text(700, 222.5 + 150, text=teamDat["Teleop Cubes Red"], font=('Arial', 15))
 
-            self.canvas.create_text(517.5, 145 + 150, text='Teleop Cubes', font=('Arial', 15))
+        self.canvas.create_text(517.5, 145 + 150, text='Teleop Cubes', font=('Arial', 15))
 
-            self.canvas.create_rectangle(310, 200 + 300, 310 + teamDat["Teleop Cones Blue"], 175 + 300, fill=color)
-            self.canvas.create_text(700, 177 + 300, text=teamDat["Teleop Cones Blue"], font=('Arial', 15))
+        self.canvas.create_rectangle(310, 200 + 300, 310 + (teamDat["Teleop Cones Blue"] * constants.barMult), 175 + 300, fill=color)
+        self.canvas.create_text(700, 177 + 300, text=teamDat["Teleop Cones Blue"], font=('Arial', 15))
 
-            self.canvas.create_rectangle(310, 210 + 300, 310 + teamDat["Teleop Cones Red"], 235 + 300, fill=color2)
-            self.canvas.create_text(700, 222.5 + 300, text=teamDat["Teleop Cones Red"], font=('Arial', 15))
+        self.canvas.create_rectangle(310, 210 + 300, 310 + (teamDat["Teleop Cones Red"] * constants.barMult), 235 + 300, fill=color2)
+        self.canvas.create_text(700, 222.5 + 300, text=teamDat["Teleop Cones Red"], font=('Arial', 15))
 
-            self.canvas.create_text(517.5, 145 + 300, text='Teleop Cones', font=('Arial', 15))
+        self.canvas.create_text(517.5, 145 + 300, text='Teleop Cones', font=('Arial', 15))
 
-            self.canvas.create_rectangle(310, 200 + 450, 310 + teamDat["Endgame Blue"], 175 + 450, fill=color)
-            self.canvas.create_text(700, 177 + 450, text=teamDat["Endgame Blue"], font=('Arial', 15))
+        self.canvas.create_rectangle(310, 200 + 450, 310 + (teamDat["Endgame Blue"] * constants.barMult), 175 + 450, fill=color)
+        self.canvas.create_text(700, 177 + 450, text=teamDat["Endgame Blue"], font=('Arial', 15))
 
-            self.canvas.create_rectangle(310, 210 + 450, 310 + teamDat["Endgame Red"], 235 + 450, fill=color2)
-            self.canvas.create_text(700, 222.5 + 450, text=teamDat["Endgame Red"], font=('Arial', 15))
+        self.canvas.create_rectangle(310, 210 + 450, 310 + (teamDat["Endgame Red"] * constants.barMult), 235 + 450, fill=color2)
+        self.canvas.create_text(700, 222.5 + 450, text=teamDat["Endgame Red"], font=('Arial', 15))
 
-            self.canvas.create_text(517.5, 145 + 450, text='Endgame', font=('Arial', 15))
-        except:
-            errorUpdate(1, "NO TEAM DATA")
+        self.canvas.create_text(517.5, 145 + 450, text='Endgame', font=('Arial', 15))
+
 
     def teamcard(self, padding, segmentHeight, segmentWidth, segmentPadding, topPadding, offset, teamBoxOffsetx,
                  teamBoxOffsety,
                  teamBoxInitOffsetY, teamBoxHeight, teamBoxWidth, teamBoxItY, color, color2, teamNums):
-        jsons(teamNums).makeDict()
+        makeDict(teamNums)
         for y in range(4):
             firstString = constants.prefixes[y]
             for i in range(3):
-                teamDict = jsons(teamNums[i]).makeDict()
+                teamDict = makeDict(teamNums[i])
 
                 for x in range(3):
                     secondString = constants.suffixes[x]
@@ -185,7 +185,7 @@ class generatePitSheet(tk.Tk):
             a = 0
             for j in range(3):
                 for k in range(4):
-                    a += jsons(teams[j]).makeDict()[f'{constants.prefixes[k]}{code}']
+                    a += makeDict(teams[j])[f'{constants.prefixes[k]}{code}']
 
             return a
         except:
@@ -233,10 +233,11 @@ class generatePitSheet(tk.Tk):
 
         self.scorePredictor([self.bTeams, self.rTeams])
 
-        if errorHandeler.errorCheck():
-            self.mainloop()
-            errorHandeler.returnWarning('Killed Pit sheet')
-        else:
-            self.destroy()
+        self.mainloop()
 
+        # if errorHandeler.errorCheck():
+        #     self.mainloop()
+        # else:
+        #     self.destroy()
+        #     errorHandeler.returnWarning('Killed Pit sheet')
 

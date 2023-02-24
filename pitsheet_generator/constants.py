@@ -1,5 +1,7 @@
 class constants:
-    jsonName = 'json.json'
+    defaultJson = '2023test2.json'
+
+    jsonName = defaultJson
 
     x = 6
     # high cone/cube point value auton
@@ -19,8 +21,17 @@ class constants:
     z1 = 2
     # low cone/cube point value teleop
 
+    barMult = 7
+    # bar multipliers
+
     prefixes = ['Auton Point ', 'Teleop Cubes ', 'Teleop Cubes ', 'Endgame Point ']
     # dictionary prefixes used in teamcard
 
     suffixes = ['Low', 'Avg', 'High']
+
     # dictionary suffixes used in teamcard
+
+    version = '1.1'
+
+    def setJsonName(self, jsoner):
+        jsonName = jsoner
