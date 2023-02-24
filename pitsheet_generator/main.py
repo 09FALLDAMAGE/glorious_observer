@@ -1,9 +1,8 @@
 from pitSheet import *
+# from jsonInterpreter import *
 from jsonInterpreter import *
+
 from interface import *
 
+# generatePitSheet(10, [2145, 2145, 2145], [2145, 2145, 2145]).generateSheet()
 interface().createGUI()
-
-# jsons(503).printDict()
-#
-# generatePitSheet(10, [503, 503, 503], [503, 503, 503]).generateSheet()

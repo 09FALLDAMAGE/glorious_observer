@@ -11,6 +11,9 @@ def returnWarning(message):
     print(Style.RESET_ALL)
 
 
+def reset():
+    state = 0
+
 def errorUpdate(severity, Errortype):
     severity = state
     if severity == 0:
