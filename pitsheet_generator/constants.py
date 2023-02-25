@@ -35,3 +35,4 @@ class constants:
 
     def setJsonName(self, jsoner):
         jsonName = jsoner
+

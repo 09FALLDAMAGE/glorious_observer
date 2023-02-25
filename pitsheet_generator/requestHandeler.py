@@ -1,7 +1,7 @@
-from pitSheet import *
-from errorHandeler import *
+from errorHandeler import errorUpdate
+from constants import constants
+from pitSheet import generatePitSheet
 import os
-from constants import *
 
 
 class requests:
@@ -14,7 +14,7 @@ class requests:
         self.checkValid(jsonPath)
 
         if self.isValid:
-            print(self.dir_list)
+            # print(self.dir_list)
             constants().setJsonName(jsonPath)
             generatePitSheet(match, [573, 830, 2145], [6570, 453, 7254]).generateSheet()
 
@@ -25,5 +25,6 @@ class requests:
         if self.isValid:
             return True
         else:
-            errorHandeler.errorUpdate(1, 'not a valid json name')
+            errorUpdate(1, 'not a valid json name')
             return False
+
