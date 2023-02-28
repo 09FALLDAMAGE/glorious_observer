@@ -1,5 +1,5 @@
 class constants:
-    defaultTeam = 67
+    defaultTeam = 7
 
     x = 6
     # high cone/cube point value auton

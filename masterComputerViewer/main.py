@@ -1,6 +1,4 @@
-from mainPage import *
-from jsonInterpreter import *
+from mainPage import mainPage
 
-printDict(308)
 mainPage().createHUD()
 

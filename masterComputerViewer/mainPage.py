@@ -202,20 +202,24 @@ class mainPage(tk.Tk):
                 endGame.get_tk_widget().place(x=self.graphPos[0], y=self.graphPos[1], in_=self)
 
     def teamImage(self):
-        image = Image.open(f"{self.teamID}.jpg")
+        try:
+            image = Image.open(f"{self.teamID}.jpg")
 
-        # Resize the image using resize() method
-        resize_image = image.resize((413, 310))
+            # Resize the image using resize() method
+            resize_image = image.resize((413, 310))
 
-        img = ImageTk.PhotoImage(resize_image)
+            img = ImageTk.PhotoImage(resize_image)
 
-        # create label and add resize image
-        label1 = tk.Label(image=img)
-        label1.image = img
-        label1.tag = 'updateContent'
-        label1.pack()
+            # create label and add resize image
+            label1 = tk.Label(image=img)
+            label1.image = img
+            label1.tag = 'updateContent'
+            label1.pack()
 
-        label1.place(x=100, y=30)
+            label1.place(x=100, y=30)
+        except:
+            self.canvas.create_rectangle(100, 30, 513, 340)
+            self.canvas.create_text(306, 170, text='No Image Available', font=('Arial', 15))
 
     def teamTitles(self):
         self.canvas.create_text(self.geo[0] / 2, 40, text=f'Team {self.teamID}', font=('Arial', 25), tags='updateContent')
@@ -274,11 +278,21 @@ class mainPage(tk.Tk):
 
         modeDrop = tk.OptionMenu(self, self.modeVar, *self.mode, command=self.modes)
         modeDrop.pack()
-        modeDrop.place(x=15, y=15, in_=self)
+        modeDrop.place(x=15, y=15, in_=self)\
+
+
+    def pointers(self):
+        def callback(e):
+            x = e.x
+            y = e.y
+            print("Pointer is currently at %d, %d" % (x, y))
+
+        self.bind('<Motion>', callback)
 
     def createHUD(self):
         self.teamImage()
         self.teamTitles()
         self.pitDisplay()
         self.makeDrops()
+        self.pointers()
         self.mainloop()
