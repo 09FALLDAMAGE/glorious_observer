@@ -1,5 +1,5 @@
 class constants:
-    jsonName = 'json.json'
+    defaultTeam = 67
 
     x = 6
     # high cone/cube point value auton
@@ -18,9 +18,3 @@ class constants:
 
     z1 = 2
     # low cone/cube point value teleop
-
-    prefixes = ['Auton Point ', 'Teleop Cubes ', 'Teleop Cubes ', 'Endgame Point ']
-    # dictionary prefixes used in teamcard
-
-    suffixes = ['Low', 'Avg', 'High']
-    # dictionary suffixes used in teamcard

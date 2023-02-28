@@ -4,11 +4,12 @@ import matplotlib.pyplot as plt
 from PIL import Image, ImageTk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from tkinter import Canvas
+from constants import *
 from errorHandeler import *
 
 
 class mainPage(tk.Tk):
-    def __init__(self, Tn):
+    def __init__(self):
         super(mainPage, self).__init__()
 
         self.geo = [1535, 840]
@@ -60,7 +61,7 @@ class mainPage(tk.Tk):
         global cones
         global endGame
 
-        self.teamID = Tn
+        self.teamID = constants.defaultTeam
 
         self.variable = tk.StringVar()
         self.variable.set(self.options[0])
@@ -200,13 +201,6 @@ class mainPage(tk.Tk):
                 ax5.set_title('Endgame Points')
                 endGame.get_tk_widget().place(x=self.graphPos[0], y=self.graphPos[1], in_=self)
 
-    def kill(self):
-        totals.get_tk_widget().destroy()
-        auto.get_tk_widget().destroy()
-        cubes.get_tk_widget().destroy()
-        cones.get_tk_widget().destroy()
-        endGame.get_tk_widget().destroy()
-
     def teamImage(self):
         image = Image.open(f"{self.teamID}.jpg")
 
@@ -218,13 +212,39 @@ class mainPage(tk.Tk):
         # create label and add resize image
         label1 = tk.Label(image=img)
         label1.image = img
+        label1.tag = 'updateContent'
         label1.pack()
 
         label1.place(x=100, y=30)
 
     def teamTitles(self):
-        self.canvas.create_text(self.geo[0] / 2, 40, text=f'Team {self.teamID}', font=('Arial', 25))
-        self.canvas.create_text(self.geo[0] / 2, 90, text=f'The Monsters', font=('Arial', 25))
+        self.canvas.create_text(self.geo[0] / 2, 40, text=f'Team {self.teamID}', font=('Arial', 25), tags='updateContent')
+        self.canvas.create_text(self.geo[0] / 2, 90, text=f'The Monsters', font=('Arial', 25), tags='updateContent')
+
+    def pitDisplay(self):
+        # finals
+        self.canvas.create_text(700, 200, text='Drive Type', font=('Arial', 15), tags='updateContent')
+
+        self.canvas.create_text(700, 275, text='Weight', font=('Arial', 15), tags='updateContent')
+
+        self.canvas.create_text(700, 350, text='Size', font=('Arial', 15), tags='updateContent')
+
+        self.canvas.create_text(700, 225, text='Tank', font=('Arial', 15), tags='updateContent')
+
+        self.canvas.create_text(700, 300, text='110 lbs', font=('Arial', 15), tags='updateContent')
+
+        self.canvas.create_text(700, 375, text='2ft, 25% of Charger', font=('Arial', 15), tags='updateContent')
+
+    def kill(self):
+        totals.get_tk_widget().destroy()
+        auto.get_tk_widget().destroy()
+        cubes.get_tk_widget().destroy()
+        cones.get_tk_widget().destroy()
+        endGame.get_tk_widget().destroy()
+        
+    def update(self):
+        self.kill()
+        self.canvas.delete('updateContent')
 
     def modes(self, event):
         if event == self.mode[0]:
@@ -246,20 +266,6 @@ class mainPage(tk.Tk):
             except:
                 self.canvas.create_rectangle(0, 0, self.geo[0], self.geo[1], tags='backGround', fill='white')
                 self.canvas.lower('backGround')
-
-    def pitDisplay(self):
-        # finals
-        self.canvas.create_text(700, 200, text='Drive Type', font=('Arial', 15))
-
-        self.canvas.create_text(700, 275, text='Weight', font=('Arial', 15))
-
-        self.canvas.create_text(700, 350, text='Size', font=('Arial', 15))
-
-        self.canvas.create_text(700, 225, text='Tank', font=('Arial', 15))
-
-        self.canvas.create_text(700, 300, text='110 lbs', font=('Arial', 15))
-
-        self.canvas.create_text(700, 375, text='2ft, 25% of Charger', font=('Arial', 15))
 
     def makeDrops(self):
         drop = tk.OptionMenu(self, self.variable, *self.options, command=self.thing)
