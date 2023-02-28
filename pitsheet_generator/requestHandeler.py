@@ -16,7 +16,7 @@ class requests:
         if self.isValid:
             # print(self.dir_list)
             constants().setJsonName(jsonPath)
-            generatePitSheet(match, [573, 830, 2145], [6570, 453, 7254]).generateSheet()
+            generatePitSheet(match, [573, 453, 2145], [830, 3098, 7553]).generateSheet()
 
     def checkValid(self, path):
         for i in range(len(self.dir_list) - 1):

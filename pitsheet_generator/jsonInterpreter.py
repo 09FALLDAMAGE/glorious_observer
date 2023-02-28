@@ -91,9 +91,10 @@ def autonAvg(teamNumber):
     autonBalanceChargeStation = (getDataStr(teamNumber, "Autonomous End Of Auton Pos"))
     # creates a useable array for "Autonomous Balance Charging Station" data
 
-    autonPercents.append(int(autonBalanceChargeStation.count("Nothing") / length))
-    autonPercents.append(int(autonBalanceChargeStation.count("Docked") / length))
-    autonPercents.append(int(autonBalanceChargeStation.count("Engaged") / length))
+    autonPercents.append(float(autonBalanceChargeStation.count("Nothing") / length))
+    autonPercents.append(float(autonBalanceChargeStation.count("Docked") / length))
+    autonPercents.append(float(autonBalanceChargeStation.count("Engaged") / length))
+    # autonPercents = [int(autonBalanceChargeStation.count("Nothing") / length), int(autonBalanceChargeStation.count("Docked") / length), int(autonBalanceChargeStation.count("Engaged") / length)]
     autonCrossLine = (getDataStr(teamNumber, "Autonomous Cross Line"))
     # creates a useable array for "Autonomous Leave Community" data
 
@@ -162,7 +163,7 @@ def autonAvg(teamNumber):
     autonMax = autonHighLow[len(autonHighLow) - 1]
     # gets the lowest and highest scores during auton from played matches
 
-    autoList = [autonMin, autonAvg, autonMax, autonPercents[0], autonPercents[1], autonPercents[2]]
+    autoList = [autonMin, autonAvg, autonMax, autonPercents[0], autonPercents[1], autonPercents[2], cubeMinA, cubeAvgA, cubeMaxA, coneMinA, coneAvgA, coneMaxA]
     # create a list of values that need to be put in a dictionary
 
     return autoList
@@ -261,9 +262,10 @@ def endgameAvg(teamNumber):
 
     endgameEndPos = (getDataStr(teamNumber, "Endgame Ending Position"))
 
-    endgamePercents.append(int(endgameEndPos.count("None") / length))
-    endgamePercents.append(int(endgameEndPos.count("Docked") / length))
-    endgamePercents.append(int(endgameEndPos.count("Engaged") / length))
+    print(f'{endgameEndPos.count("Nothing")},{endgameEndPos.count("Docked")},{endgameEndPos.count("Engaged")}')
+    endgamePercents.append(float(endgameEndPos.count("Nothing") / length))
+    endgamePercents.append(float(endgameEndPos.count("Docked") / length))
+    endgamePercents.append(float(endgameEndPos.count("Engaged") / length))
 
     for i in range(0, length):
         if (endgameEndPos[i] == 'Nothing'):
@@ -281,6 +283,7 @@ def endgameAvg(teamNumber):
     endgameMin = endgameHighLow[0]
     endgameMax = endgameHighLow[len(endgameHighLow) - 1]
     # gets the lowest and highest scores during auton from played matches
+    # print(endgamePercents)
 
     endgameBalanceTimeAvg = 0
     # declares variable for getting endgame balance time average later
@@ -300,9 +303,15 @@ def makeDict(teamNumber):
         team1["Auton Point Low"] = autonAvg(teamNumber)[0]
         team1["Auton Point Avg"] = autonAvg(teamNumber)[1]
         team1["Auton Point High"] = autonAvg(teamNumber)[2]
-        team1["Auton Nothing Percent"] = autonAvg(teamNumber)[3]
+        team1["Auton None Percent"] = autonAvg(teamNumber)[3]
         team1["Auton Docked Percent"] = autonAvg(teamNumber)[4]
         team1["Auton Engaged Percent"] = autonAvg(teamNumber)[5]
+        team1["Auton Cubes Low"] = autonAvg(teamNumber)[6]
+        team1["Auton Cubes Avg"] = autonAvg(teamNumber)[7]
+        team1["Auton Cubes High"] = autonAvg(teamNumber)[8]
+        team1["Auton Cones Low"] = autonAvg(teamNumber)[9]
+        team1["Auton Cones Avg"] = autonAvg(teamNumber)[10]
+        team1["Auton Cones High"] = autonAvg(teamNumber)[11]
         team1["Teleop Cubes Low"] = teleopAvg(teamNumber)[0]
         team1["Teleop Cubes Avg"] = teleopAvg(teamNumber)[1]
         team1["Teleop Cubes High"] = teleopAvg(teamNumber)[2]

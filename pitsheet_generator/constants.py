@@ -24,14 +24,17 @@ class constants:
     barMult = 7
     # bar multipliers
 
-    prefixes = ['Auton Point ', 'Teleop Cubes ', 'Teleop Cubes ', 'Endgame Point ']
+    prefixes = ['Auton Cones ', 'Auton Cones ', 'Teleop Cubes ', 'Teleop Cubes ', 'Endgame Point ', 'Auton Point ']
     # dictionary prefixes used in teamcard
 
     suffixes = ['Low', 'Avg', 'High']
 
+    percentPrefix = ['Auton ', 'Endgame ']
+
+    percentSuff = ['None ', 'Docked ', 'Engaged ']
     # dictionary suffixes used in teamcard
 
-    version = '1.1'
+    version = '1.5'
 
     def setJsonName(self, jsoner):
         jsonName = jsoner
