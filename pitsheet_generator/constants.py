@@ -21,11 +21,12 @@ class constants:
     z1 = 2
     # low cone/cube point value teleop
 
-    barMult = 7
+    barMult = 6
     # bar multipliers
 
-    prefixes = ['Auton Cones ', 'Auton Cones ', 'Teleop Cubes ', 'Teleop Cubes ', 'Endgame Point ', 'Auton Point ']
+    prefixes = ['Auton Cones ', 'Auton Cubes ', 'Teleop Cones ', 'Teleop Cubes ', 'Endgame Point ', 'Auton Point ']
     # dictionary prefixes used in teamcard
+    totalPrefixes = ['Auton Point ', 'Teleop Cones ', 'Teleop Cubes ', 'Endgame Point ', 'Auton Point ']
 
     suffixes = ['Low', 'Avg', 'High']
 
@@ -34,7 +35,7 @@ class constants:
     percentSuff = ['None ', 'Docked ', 'Engaged ']
     # dictionary suffixes used in teamcard
 
-    version = '1.5'
+    version = '1.6'
 
     def setJsonName(self, jsoner):
         jsonName = jsoner

@@ -241,7 +241,7 @@ class mainPage(tk.Tk):
         cubes.get_tk_widget().destroy()
         cones.get_tk_widget().destroy()
         endGame.get_tk_widget().destroy()
-        
+
     def update(self):
         self.kill()
         self.canvas.delete('updateContent')

@@ -126,7 +126,7 @@ def autonAvg(teamNumber):
             getData(teamNumber, "Autonomous Med Cubes")[length - i]) + (
                               getData(teamNumber, "Autonomous Low Cubes")[length - i])
         cubesScoredA += cubesScoredNumA
-        cubeAvgA = cubesScoredA / length
+        cubeAvgA = cubePointA / length
         # calculates average number of cubes scored by a team in auton
         cubeHighLowA.append(int(cubePointA))
         cubeHighLowA.sort()
@@ -139,7 +139,7 @@ def autonAvg(teamNumber):
             getData(teamNumber, "Autonomous Med Cones")[length - i]) + (
                               getData(teamNumber, "Autonomous Low Cones")[length - i])
         conesScoredA += conesScoredNumA
-        coneAvgA = conesScoredA / length
+        coneAvgA = conePointA / length
         # calculates average number of cones scored by a team in auton
         coneHighLowA.append(int(conePointA))
         coneHighLowA.sort()
@@ -151,8 +151,9 @@ def autonAvg(teamNumber):
         autonHighLow.append(int(autonRoundTotal))
         autonHighLow.sort()
         # appends and sorts a list of auton match scores
-    cubeMinA = cubeHighLowA[0]
-    cubeMaxA = cubeHighLowA[len(cubeHighLowA) - 1]
+    print(cubeHighLowA)
+    cubeMinA = min(cubeHighLowA)
+    cubeMaxA = max(cubeHighLowA)
     # gets the lowest and highest values of cube points scored out of played matches (auton)
 
     coneMinA = coneHighLowA[0]
@@ -262,7 +263,6 @@ def endgameAvg(teamNumber):
 
     endgameEndPos = (getDataStr(teamNumber, "Endgame Ending Position"))
 
-    print(f'{endgameEndPos.count("Nothing")},{endgameEndPos.count("Docked")},{endgameEndPos.count("Engaged")}')
     endgamePercents.append(float(endgameEndPos.count("Nothing") / length))
     endgamePercents.append(float(endgameEndPos.count("Docked") / length))
     endgamePercents.append(float(endgameEndPos.count("Engaged") / length))
