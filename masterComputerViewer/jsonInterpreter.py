@@ -115,8 +115,8 @@ def autonAvg(teamNumber):
         balancePointA = autonBalanceChargeStation[length - i] * 4
         # calculate points from balancing charging station in auton
 
-        leaveCommA = autonCrossLine[length-i] * 3
-        #calculate points from leaving the community in auton
+        leaveCommA = autonCrossLine[length - i] * 3
+        # calculate points from leaving the community in auton
         cubePointA = (getData(teamNumber, "Autonomous High Cubes")[length - i] * constants.x) + (
                 getData(teamNumber, "Autonomous Med Cubes")[length - i] * constants.y) + (
                              getData(teamNumber, "Autonomous Low Cubes")[length - i] * constants.z)
@@ -293,6 +293,68 @@ def endgameAvg(teamNumber):
     # calculations for getting the average time to balance during endgame
 
 
+def makeList(teamNumber):
+    AutonChargeData = getDataStr(teamNumber, 'Autonomous End Of Auton Pos')
+    aCharge = []
+    aTotal = []
+    for i in range(len(getData(teamNumber, "Autonomous High Cones"))):
+        if (AutonChargeData[i] == 'Nothing'):
+            aCharge.append(0)
+        elif (AutonChargeData[i] == 'Docked'):
+            aCharge.append(2)
+        elif (AutonChargeData[i] == 'Engaged'):
+            aCharge.append(3)
+
+    for i in range(len(getData(teamNumber, "Autonomous High Cones"))):
+        aTotal.append(aCharge[i] + ((getData(teamNumber, "Autonomous High Cubes")[i] + getData(teamNumber, "Autonomous High Cones")[i]) * constants.x) + ((getData(teamNumber, "Autonomous Med Cubes")[i] + getData(teamNumber, "Autonomous Med Cones")[i]) * constants.y) + ((getData(teamNumber, "Autonomous Low Cubes")[i] + getData(teamNumber, "Autonomous Low Cones")[i]) * constants.z))
+
+    EndChargeData = getDataStr(teamNumber, 'Endgame Ending Position')
+    eCharge = []
+    eTotal = []
+    for i in range(len(getDataStr(teamNumber, "Endgame Ending Position"))):
+        if (EndChargeData[i] == 'Nothing'):
+            eCharge.append(0)
+        elif (EndChargeData[i] == 'Docked'):
+            eCharge.append(3)
+        elif (EndChargeData[i] == 'Engaged'):
+            eCharge.append(5)
+    eTotal = eCharge
+
+    tCubes = []
+    tCones = []
+    for i in range(len(getData(teamNumber, "Teleop High Cones"))):
+        tCubes.append(getData(teamNumber, "Teleop High Cubes")[i] + getData(teamNumber, "Teleop Med Cubes")[i] + getData(teamNumber, "Teleop Low Cubes")[i])
+        tCones.append(getData(teamNumber, "Teleop High Cones")[i] + getData(teamNumber, "Teleop Med Cones")[i] + getData(teamNumber, "Teleop Low Cones")[i])
+
+    team1 = {}
+    # creates dictionary team1
+    team1["Autonomous Cross Line"] = getDataStr(teamNumber, "Autonomous Cross Line")
+    # team1["Autonomous End Of Auton Pos"] = getDataStr(teamNumber, "Autonomous End Of Auton Pos")
+    # team1["Autonomous High Cones"] = getData(teamNumber, "Autonomous High Cones")
+    # team1["Autonomous High Cubes"] = getData(teamNumber, "Autonomous High Cubes")
+    # team1["Autonomous Low Cones"] = getData(teamNumber, "Autonomous Low Cones")
+    # team1["Autonomous Low Cubes"] = getData(teamNumber, "Autonomous Low Cubes")
+    # team1["Autonomous Med Cones"] = getData(teamNumber, "Autonomous Med Cones")
+    # team1["Autonomous Med Cubes"] = getData(teamNumber, "Autonomous Med Cubes")
+    team1["Autonomous Total"] = aTotal
+    # team1["Autonomous Starting Position"] = getDataStr(teamNumber, "Autonomous Starting Position")
+    # team1["Endgame Ending Position"] = getDataStr(teamNumber, "Endgame Ending Position")
+    team1["Endgame Total"] = eTotal
+    # team1["Match Number"] = getData(teamNumber, "Match Number")
+    team1["Teleop Total Cubes"] = tCubes
+    team1["Teleop Total Cones"] = tCones
+    # team1["Teleop Cool Robot"] = getDataStr(teamNumber, "Teleop Cool Robot")
+    # team1["Teleop High Cones"] = getData(teamNumber, "Teleop High Cones")
+    # team1["Teleop High Cubes"] = getData(teamNumber, "Teleop High Cubes")
+    # team1["Teleop Low Cones"] = getData(teamNumber, "Teleop Low Cones")
+    # team1["Teleop Low Cubes"] = getData(teamNumber, "Teleop Low Cubes")
+    # team1["Teleop Med Cones"] = getData(teamNumber, "Teleop Med Cones")
+    # team1["Teleop Med Cubes"] = getData(teamNumber, "Teleop Med Cubes")
+    # populates the dictionary team1
+
+    return team1
+
+
 def makeDict(teamNumber):
     try:
         team1 = {}
@@ -344,6 +406,22 @@ def makeDict(teamNumber):
 
         return team1
     # returns the dictionary team1 to makeDict
+
+def checkTeam(teamNum):
+    tmpData = open(constants.jsonName)
+    jsonFile = json.loads(tmpData.read())
+    names = jsonFile.keys()
+    state = False
+
+    maxMatches = 100
+    # set the maximum matches
+
+    for i in range(1, maxMatches):
+        teamMatchAndNumber = f"{i}_{teamNum}"
+        if teamMatchAndNumber in names:
+            state = True
+    return state
+
 
 def printDict(teamNumber):
     print(makeDict(teamNumber))

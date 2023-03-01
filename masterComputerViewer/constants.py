@@ -1,4 +1,7 @@
 class constants:
+    jsonName = '2023test2.json'
+
+    pitName = 'pitScoutMimil2023.json'
     defaultTeam = 67
 
     x = 6
@@ -18,3 +21,7 @@ class constants:
 
     z1 = 2
     # low cone/cube point value teleop
+
+    sigFigs = 1
+
+    vers = '1.0'

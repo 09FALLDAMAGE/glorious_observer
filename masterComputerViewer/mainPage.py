@@ -6,7 +6,8 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from tkinter import Canvas
 from constants import *
 from errorHandeler import *
-
+from pitJson import getPitData
+from jsonInterpreter import makeList, checkTeam
 
 class mainPage(tk.Tk):
     def __init__(self):
@@ -21,7 +22,7 @@ class mainPage(tk.Tk):
 
         self.geo = [1535, 840]
 
-        self.title(f"Master Viewer V{'1.0'}")
+        self.title(f"Master Viewer V{constants.vers}")
 
         self.graphPos = [60, 400]
 
@@ -54,6 +55,7 @@ class mainPage(tk.Tk):
                       'Endgame': [3, 2, 1, 2, 3, 1, 2, 1, 2, 0]
                       }
 
+
         self.options = [
             "Total Match Points",
             "Auto Points",
@@ -75,6 +77,23 @@ class mainPage(tk.Tk):
 
         self.canvas.create_rectangle(100, 30, 513, 340)
         self.canvas.create_text(306, 170, text='No Image Available', font=('Arial', 15))
+
+        newDat = self.propData(self.teamNum)
+
+        self.data1['Match'] = newDat['matchAxis']
+        self.data1['Total Points'] = newDat['matchAxis']
+
+        self.data2['Match'] = newDat['matchAxis']
+        self.data2['Auto Points'] = newDat['Auton Total']
+
+        self.data3['Match'] = newDat['matchAxis']
+        self.data3['TeleCubes'] = newDat['TeleCubes']
+
+        self.data4['Match'] = newDat['matchAxis']
+        self.data4['TeleCones'] = newDat['TeleCones']
+
+        self.data5['Match'] = newDat['matchAxis']
+        self.data5['Endgame'] = newDat['eTotal']
 
     def thing(self, event):
         df1 = pd.DataFrame(self.data1)
@@ -206,6 +225,17 @@ class mainPage(tk.Tk):
                 ax5.set_title('Endgame Points')
                 self.endGame.get_tk_widget().place(x=self.graphPos[0], y=self.graphPos[1], in_=self)
 
+    def propData(self, teamNumber):
+        teamDat = makeList(teamNumber)
+        matchAxis = []
+        matchesElapesed = len(makeList(self.teamNum)['Autonomous Cross Line'])
+        for i in range(matchesElapesed):
+            matchAxis.append(i + 1)
+
+        fullData = {'matchAxis': matchAxis, 'Auton Total': teamDat['Autonomous Total'], 'TeleCones': teamDat['Teleop Total Cubes'], 'TeleCubes': teamDat['Teleop Total Cones'], 'eTotal': teamDat['Endgame Total']}
+
+        return fullData
+
     def teamImage(self):
 
         try:
@@ -229,9 +259,10 @@ class mainPage(tk.Tk):
     def teamTitles(self):
         self.canvas.create_text(self.geo[0] / 2, 40, text=f'Team {self.teamNum}', font=('Arial', 25),
                                 tags='updateContent')
-        self.canvas.create_text(self.geo[0] / 2, 90, text=f'The Monsters', font=('Arial', 25), tags='updateContent')
+        self.canvas.create_text(self.geo[0] / 2, 90, text=f'{getPitData(str(self.teamNum))["Name"]}', font=('Arial', 25), tags='updateContent')
 
     def pitDisplay(self):
+        data = getPitData(str(self.teamNum))
         # finals
         self.canvas.create_text(700, 200, text='Drive Type', font=('Arial', 15), tags='updateContent')
 
@@ -239,11 +270,11 @@ class mainPage(tk.Tk):
 
         self.canvas.create_text(700, 350, text='Size', font=('Arial', 15), tags='updateContent')
 
-        self.canvas.create_text(700, 225, text='Tank', font=('Arial', 15), tags='updateContent')
+        self.canvas.create_text(700, 225, text=f'{data["Drivetrain"]}', font=('Arial', 15), tags='updateContent')
 
-        self.canvas.create_text(700, 300, text='110 lbs', font=('Arial', 15), tags='updateContent')
+        self.canvas.create_text(700, 300, text=f'{data["Weight"]} Lbs', font=('Arial', 15), tags='updateContent')
 
-        self.canvas.create_text(700, 375, text='2ft, 25% of Charger', font=('Arial', 15), tags='updateContent')
+        self.canvas.create_text(700, 375, text=f'{round(data["Width"]/ 12, constants.sigFigs)} x {round(data["Length"]/ 12, constants.sigFigs)} ft, {round((min([data["Width"]/ 12, data["Length"]/ 12]) / 8) * 100)}% of Charger', font=('Arial', 15), tags='updateContent')
 
     def kill(self):
         try:
@@ -269,18 +300,39 @@ class mainPage(tk.Tk):
 
     def update(self):
         self.teamNum = self.teamID.get()
-        self.kill()
-        try:
-            self.canvas.delete('updateContent')
-        except:
-            filler2 = '21, can you do some for me'
-        try:
-            self.label1.destroy()
-        except:
-            filler2 = "hey sisters"
-        self.teamTitles()
-        self.pitDisplay()
-        self.teamImage()
+        if checkTeam(self.teamNum):
+            newDat = self.propData(self.teamNum)
+            self.kill()
+            try:
+                self.canvas.delete('updateContent')
+            except:
+                filler2 = '21, can you do some for me'
+            try:
+                self.label1.destroy()
+            except:
+                filler2 = "hey sisters"
+
+            self.data1['Match'] = newDat['matchAxis']
+            self.data1['Total Points'] = newDat['matchAxis']
+
+            self.data2['Match'] = newDat['matchAxis']
+            self.data2['Auto Points'] = newDat['Auton Total']
+
+            self.data3['Match'] = newDat['matchAxis']
+            self.data3['TeleCubes'] = newDat['TeleCubes']
+
+            self.data4['Match'] = newDat['matchAxis']
+            self.data4['TeleCones'] = newDat['TeleCones']
+
+            self.data5['Match'] = newDat['matchAxis']
+            self.data5['Endgame'] = newDat['eTotal']
+
+            self.teamTitles()
+            self.pitDisplay()
+            self.teamImage()
+            self.thing(self.options[0])
+        else:
+            print('Not a Valid Team')
 
     def modes(self, event):
         if event == self.mode[0]:
