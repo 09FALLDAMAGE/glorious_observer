@@ -1,5 +1,8 @@
 class constants:
-    jsonName = 'json.json'
+    jsonName = '2023test2.json'
+
+    pitName = 'pitScoutMimil2023.json'
+    defaultTeam = 67
 
     x = 6
     # high cone/cube point value auton
@@ -19,8 +22,6 @@ class constants:
     z1 = 2
     # low cone/cube point value teleop
 
-    prefixes = ['Auton Point ', 'Teleop Cubes ', 'Teleop Cubes ', 'Endgame Point ']
-    # dictionary prefixes used in teamcard
+    sigFigs = 1
 
-    suffixes = ['Low', 'Avg', 'High']
-    # dictionary suffixes used in teamcard
+    vers = '1.0'

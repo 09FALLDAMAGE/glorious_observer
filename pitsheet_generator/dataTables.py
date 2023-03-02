@@ -3,7 +3,7 @@ class dataTables:
         self.table = {}
 
     def writeNew(self, tag, value):
-        self.table = {tag: value}
+        self.table += {tag: value}
 
     def getVal(self, tag):
         try:

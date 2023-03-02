@@ -4,16 +4,26 @@ import matplotlib.pyplot as plt
 from PIL import Image, ImageTk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from tkinter import Canvas
+from constants import *
 from errorHandeler import *
+from pitJson import getPitData
+from jsonInterpreter import makeList, checkTeam
 
 
 class mainPage(tk.Tk):
-    def __init__(self, Tn):
+    def __init__(self):
         super(mainPage, self).__init__()
+
+        self.label1 = None
+        self.endGame = None
+        self.cones = None
+        self.auto = None
+        self.cubes = None
+        self.totals = None
 
         self.geo = [1535, 840]
 
-        self.title(f"Master Viewer V{'1.0'}")
+        self.title(f"Master Viewer V{constants.vers}")
 
         self.graphPos = [60, 400]
 
@@ -54,13 +64,8 @@ class mainPage(tk.Tk):
             "Endgame Balance"
         ]
 
-        global totals
-        global auto
-        global cubes
-        global cones
-        global endGame
-
-        self.teamID = Tn
+        self.teamID = tk.StringVar()
+        self.teamNum = constants.defaultTeam
 
         self.variable = tk.StringVar()
         self.variable.set(self.options[0])
@@ -69,6 +74,83 @@ class mainPage(tk.Tk):
         self.modeVar = tk.StringVar()
         self.modeVar.set(self.mode[0])
         self.modes(self.mode[0])
+
+        self.canvas.create_rectangle(100, 30, 513, 340)
+        self.canvas.create_text(306, 170, text='No Image Available', font=('Arial', 15))
+
+        newDat = self.propData(self.teamNum)
+
+        self.sheetFrame = tk.Frame(self)
+
+        self.sheetButtonFrame = tk.Frame(self)
+
+        self.row = 35
+        self.col = 6
+
+        self.cells = [[None for i in range(self.col)] for j in range(self.row)]
+
+        self.sheetFrame.pack()
+        self.sheetButtonFrame.pack()
+
+        self.data1['Match'] = newDat['matchAxis']
+        self.data1['Total Points'] = newDat['matchAxis']
+
+        self.data2['Match'] = newDat['matchAxis']
+        self.data2['Auto Points'] = newDat['Auton Total']
+
+        self.data3['Match'] = newDat['matchAxis']
+        self.data3['TeleCubes'] = newDat['TeleCubes']
+
+        self.data4['Match'] = newDat['matchAxis']
+        self.data4['TeleCones'] = newDat['TeleCones']
+
+        self.data5['Match'] = newDat['matchAxis']
+        self.data5['Endgame'] = newDat['eTotal']
+
+    def save(self):
+        file = open("SpreadsheetData.txt", "w")
+
+        for i in range(self.row):
+            for j in range(self.col):
+                file.write(self.cells[i][j].get() + ",")
+            file.write("\n")
+
+        file.close()
+
+    def load(self):
+        file = open("SpreadsheetData.txt", "r")
+
+        self.clear()
+
+        for i in range(self.row):
+            temp = file.readline()
+            temp = temp.split(",")
+            for j in range(self.col):
+                self.cells[i][j].insert(0, temp[j].strip())
+
+    def clear(self):
+
+        for i in range(self.row):
+            for j in range(self.col):
+                self.cells[i][j].delete(0, 'end')
+
+    def makeSheet(self):
+        for i in range(self.row):
+            for j in range(self.col):
+                self.cells[i][j] = tk.Entry(self.sheetFrame, width=15)
+                self.cells[i][j].grid(row=i, column=j)
+
+        self.saveButton = tk.Button(self.sheetButtonFrame, text="Save", command=self.save)
+        self.saveButton.pack()
+
+        self.loadButton = tk.Button(self.sheetButtonFrame, text="Load", command=self.load)
+        self.loadButton.pack()
+
+        self.clearButton = tk.Button(self.sheetButtonFrame, text="Clear", command=self.clear)
+        self.clearButton.pack()
+
+        self.sheetFrame.place(x=900, y=150)
+        self.sheetButtonFrame.place(x=860, y=700)
 
     def thing(self, event):
         df1 = pd.DataFrame(self.data1)
@@ -87,23 +169,23 @@ class mainPage(tk.Tk):
 
                 figure1 = plt.Figure(figsize=(5, 4), dpi=100)
                 ax1 = figure1.add_subplot(111)
-                totals = FigureCanvasTkAgg(figure1, self)
-                totals.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
+                self.totals = FigureCanvasTkAgg(figure1, self)
+                self.totals.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
                 df1 = df1[['Match', 'Total Points']].groupby('Match').sum()
                 df1.plot(kind='line', legend=True, ax=ax1, color='blue', marker='o', fontsize=10)
                 ax1.set_title('Total Points')
 
-                totals.get_tk_widget().place(x=self.graphPos[0], y=self.graphPos[1], in_=self)
+                self.totals.get_tk_widget().place(x=self.graphPos[0], y=self.graphPos[1], in_=self)
             except:
                 figure1 = plt.Figure(figsize=(5, 4), dpi=100)
                 ax1 = figure1.add_subplot(111)
-                totals = FigureCanvasTkAgg(figure1, self)
-                totals.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
+                self.totals = FigureCanvasTkAgg(figure1, self)
+                self.totals.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
                 df1 = df1[['Match', 'Total Points']].groupby('Match').sum()
                 df1.plot(kind='line', legend=True, ax=ax1, color='red', marker='o', fontsize=10)
                 ax1.set_title('Total Points')
 
-                totals.get_tk_widget().place(x=self.graphPos[0], y=self.graphPos[1], in_=self)
+                self.totals.get_tk_widget().place(x=self.graphPos[0], y=self.graphPos[1], in_=self)
 
         elif event == self.options[1]:
             try:
@@ -111,23 +193,23 @@ class mainPage(tk.Tk):
 
                 figure2 = plt.Figure(figsize=(5, 4), dpi=100)
                 ax2 = figure2.add_subplot(111)
-                auto = FigureCanvasTkAgg(figure2, self)
-                auto.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
+                self.auto = FigureCanvasTkAgg(figure2, self)
+                self.auto.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
                 df2 = df2[['Match', 'Auto Points']].groupby('Match').sum()
                 df2.plot(kind='line', legend=True, ax=ax2, color='r', marker='o', fontsize=10)
                 ax2.set_title('Auton Points Per Match')
 
-                auto.get_tk_widget().place(x=self.graphPos[0], y=self.graphPos[1], in_=self)
+                self.auto.get_tk_widget().place(x=self.graphPos[0], y=self.graphPos[1], in_=self)
             except:
                 figure2 = plt.Figure(figsize=(5, 4), dpi=100)
                 ax2 = figure2.add_subplot(111)
-                auto = FigureCanvasTkAgg(figure2, self)
-                auto.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
+                self.auto = FigureCanvasTkAgg(figure2, self)
+                self.auto.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
                 df2 = df2[['Match', 'Auto Points']].groupby('Match').sum()
                 df2.plot(kind='line', legend=True, ax=ax2, color='r', marker='o', fontsize=10)
                 ax2.set_title('Auton Points Per Match')
 
-                auto.get_tk_widget().place(x=self.graphPos[0], y=self.graphPos[1], in_=self)
+                self.auto.get_tk_widget().place(x=self.graphPos[0], y=self.graphPos[1], in_=self)
 
         elif event == self.options[2]:
             try:
@@ -135,23 +217,23 @@ class mainPage(tk.Tk):
 
                 figure3 = plt.Figure(figsize=(5, 4), dpi=100)
                 ax3 = figure3.add_subplot(111)
-                cubes = FigureCanvasTkAgg(figure3, self)
-                cubes.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
+                self.cubes = FigureCanvasTkAgg(figure3, self)
+                self.cubes.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
                 df3 = df3[['Match', 'TeleCubes']].groupby('Match').sum()
                 df3.plot(kind='line', legend=True, ax=ax3, color='r', marker='o', fontsize=10)
                 ax3.set_title('Teleop Cubes per Match')
 
-                cubes.get_tk_widget().place(x=self.graphPos[0], y=self.graphPos[1], in_=self)
+                self.cubes.get_tk_widget().place(x=self.graphPos[0], y=self.graphPos[1], in_=self)
             except:
                 figure3 = plt.Figure(figsize=(5, 4), dpi=100)
                 ax3 = figure3.add_subplot(111)
-                cubes = FigureCanvasTkAgg(figure3, self)
-                cubes.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
+                self.cubes = FigureCanvasTkAgg(figure3, self)
+                self.cubes.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
                 df3 = df3[['Match', 'TeleCubes']].groupby('Match').sum()
                 df3.plot(kind='line', legend=True, ax=ax3, color='r', marker='o', fontsize=10)
                 ax3.set_title('Teleop Cubes per Match')
 
-                cubes.get_tk_widget().place(x=self.graphPos[0], y=self.graphPos[1], in_=self)
+                self.cubes.get_tk_widget().place(x=self.graphPos[0], y=self.graphPos[1], in_=self)
 
         elif event == self.options[3]:
             try:
@@ -159,23 +241,23 @@ class mainPage(tk.Tk):
 
                 figure4 = plt.Figure(figsize=(5, 4), dpi=100)
                 ax4 = figure4.add_subplot(111)
-                cones = FigureCanvasTkAgg(figure4, self)
-                cones.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
+                self.cones = FigureCanvasTkAgg(figure4, self)
+                self.cones.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
                 df4 = df4[['Match', 'TeleCubes']].groupby('Match').sum()
                 df4.plot(kind='line', legend=True, ax=ax4, color='r', marker='o', fontsize=10)
                 ax4.set_title('Teleop Cones per Match')
 
-                cones.get_tk_widget().place(x=self.graphPos[0], y=self.graphPos[1], in_=self)
+                self.cones.get_tk_widget().place(x=self.graphPos[0], y=self.graphPos[1], in_=self)
             except:
                 figure4 = plt.Figure(figsize=(5, 4), dpi=100)
                 ax4 = figure4.add_subplot(111)
-                cones = FigureCanvasTkAgg(figure4, self)
-                cones.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
+                self.cones = FigureCanvasTkAgg(figure4, self)
+                self.cones.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
                 df4 = df4[['Match', 'TeleCones']].groupby('Match').sum()
                 df4.plot(kind='line', legend=True, ax=ax4, color='r', marker='o', fontsize=10)
                 ax4.set_title('Teleop Cones per Match')
 
-                cones.get_tk_widget().place(x=self.graphPos[0], y=self.graphPos[1], in_=self)
+                self.cones.get_tk_widget().place(x=self.graphPos[0], y=self.graphPos[1], in_=self)
 
         elif event == self.options[4]:
             try:
@@ -183,48 +265,136 @@ class mainPage(tk.Tk):
 
                 figure5 = plt.Figure(figsize=(5, 4), dpi=100)
                 ax5 = figure5.add_subplot(111)
-                endGame = FigureCanvasTkAgg(figure5, self)
-                endGame.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
+                self.endGame = FigureCanvasTkAgg(figure5, self)
+                self.endGame.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
                 df5 = df5[['Match', 'Endgame']].groupby('Match').sum()
                 df5.plot(kind='line', legend=True, ax=ax5, color='r', marker='o', fontsize=10)
                 ax5.set_title('Endgame Points')
 
-                endGame.get_tk_widget().place(x=self.graphPos[0], y=self.graphPos[1], in_=self)
+                self.endGame.get_tk_widget().place(x=self.graphPos[0], y=self.graphPos[1], in_=self)
             except:
                 figure5 = plt.Figure(figsize=(5, 4), dpi=100)
                 ax5 = figure5.add_subplot(111)
-                endGame = FigureCanvasTkAgg(figure5, self)
-                endGame.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
+                self.endGame = FigureCanvasTkAgg(figure5, self)
+                self.endGame.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
                 df5 = df5[['Match', 'Endgame']].groupby('Match').sum()
                 df5.plot(kind='line', legend=True, ax=ax5, color='r', marker='o', fontsize=10)
                 ax5.set_title('Endgame Points')
-                endGame.get_tk_widget().place(x=self.graphPos[0], y=self.graphPos[1], in_=self)
+                self.endGame.get_tk_widget().place(x=self.graphPos[0], y=self.graphPos[1], in_=self)
 
-    def kill(self):
-        totals.get_tk_widget().destroy()
-        auto.get_tk_widget().destroy()
-        cubes.get_tk_widget().destroy()
-        cones.get_tk_widget().destroy()
-        endGame.get_tk_widget().destroy()
+    def propData(self, teamNumber):
+        teamDat = makeList(teamNumber)
+        matchAxis = []
+        matchesElapesed = len(makeList(self.teamNum)['Autonomous Cross Line'])
+        for i in range(matchesElapesed):
+            matchAxis.append(i + 1)
+
+        fullData = {'matchAxis': matchAxis, 'Auton Total': teamDat['Autonomous Total'],
+                    'TeleCones': teamDat['Teleop Total Cubes'], 'TeleCubes': teamDat['Teleop Total Cones'],
+                    'eTotal': teamDat['Endgame Total']}
+
+        return fullData
 
     def teamImage(self):
-        image = Image.open(f"{self.teamID}.jpg")
 
-        # Resize the image using resize() method
-        resize_image = image.resize((413, 310))
+        try:
+            image = Image.open(f"{self.teamNum}.jpg")
 
-        img = ImageTk.PhotoImage(resize_image)
+            # Resize the image using resize() method
+            resize_image = image.resize((413, 310))
 
-        # create label and add resize image
-        label1 = tk.Label(image=img)
-        label1.image = img
-        label1.pack()
+            img = ImageTk.PhotoImage(resize_image)
 
-        label1.place(x=100, y=30)
+            # create label and add resize image
+            self.label1 = tk.Label(image=img)
+            self.label1.image = img
+            self.label1.tag = 'updateContent'
+            self.label1.pack()
+
+            self.label1.place(x=100, y=30)
+        except:
+            filler3 = '17'
 
     def teamTitles(self):
-        self.canvas.create_text(self.geo[0] / 2, 40, text=f'Team {self.teamID}', font=('Arial', 25))
-        self.canvas.create_text(self.geo[0] / 2, 90, text=f'The Monsters', font=('Arial', 25))
+        self.canvas.create_text(self.geo[0] / 2, 40, text=f'Team {self.teamNum}', font=('Arial', 25),
+                                tags='updateContent')
+        self.canvas.create_text(self.geo[0] / 2, 90, text=f'{getPitData(str(self.teamNum))["Name"]}',
+                                font=('Arial', 25), tags='updateContent')
+
+    def pitDisplay(self):
+        data = getPitData(str(self.teamNum))
+        # finals
+        self.canvas.create_text(700, 200, text='Drive Type', font=('Arial', 15), tags='updateContent')
+
+        self.canvas.create_text(700, 275, text='Weight', font=('Arial', 15), tags='updateContent')
+
+        self.canvas.create_text(700, 350, text='Size', font=('Arial', 15), tags='updateContent')
+
+        self.canvas.create_text(700, 225, text=f'{data["Drivetrain"]}', font=('Arial', 15), tags='updateContent')
+
+        self.canvas.create_text(700, 300, text=f'{data["Weight"]} Lbs', font=('Arial', 15), tags='updateContent')
+
+        self.canvas.create_text(700, 375,
+                                text=f'{round(data["Width"] / 12, constants.sigFigs)} x {round(data["Length"] / 12, constants.sigFigs)} ft, {round((min([data["Width"] / 12, data["Length"] / 12]) / 8) * 100)}% of Charger',
+                                font=('Arial', 15), tags='updateContent')
+
+    def kill(self):
+        try:
+            self.totals.get_tk_widget().destroy()
+        except:
+            filler = '21Savage'
+        try:
+            self.auto.get_tk_widget().destroy()
+        except:
+            filler = '21Savage'
+        try:
+            self.cubes.get_tk_widget().destroy()
+        except:
+            filler = '21Savage'
+        try:
+            self.cones.get_tk_widget().destroy()
+        except:
+            filler = '21Savage'
+        try:
+            self.endGame.get_tk_widget().destroy()
+        except:
+            filler = '21Savage'
+
+    def update(self):
+        self.teamNum = self.teamID.get()
+        if checkTeam(self.teamNum):
+            newDat = self.propData(self.teamNum)
+            self.kill()
+            try:
+                self.canvas.delete('updateContent')
+            except:
+                filler2 = '21, can you do some for me'
+            try:
+                self.label1.destroy()
+            except:
+                filler2 = "hey sisters"
+
+            self.data1['Match'] = newDat['matchAxis']
+            self.data1['Total Points'] = newDat['matchAxis']
+
+            self.data2['Match'] = newDat['matchAxis']
+            self.data2['Auto Points'] = newDat['Auton Total']
+
+            self.data3['Match'] = newDat['matchAxis']
+            self.data3['TeleCubes'] = newDat['TeleCubes']
+
+            self.data4['Match'] = newDat['matchAxis']
+            self.data4['TeleCones'] = newDat['TeleCones']
+
+            self.data5['Match'] = newDat['matchAxis']
+            self.data5['Endgame'] = newDat['eTotal']
+
+            self.teamTitles()
+            self.pitDisplay()
+            self.teamImage()
+            self.thing(self.options[0])
+        else:
+            print('Not a Valid Team')
 
     def modes(self, event):
         if event == self.mode[0]:
@@ -247,20 +417,6 @@ class mainPage(tk.Tk):
                 self.canvas.create_rectangle(0, 0, self.geo[0], self.geo[1], tags='backGround', fill='white')
                 self.canvas.lower('backGround')
 
-    def pitDisplay(self):
-        # finals
-        self.canvas.create_text(700, 200, text='Drive Type', font=('Arial', 15))
-
-        self.canvas.create_text(700, 275, text='Weight', font=('Arial', 15))
-
-        self.canvas.create_text(700, 350, text='Size', font=('Arial', 15))
-
-        self.canvas.create_text(700, 225, text='Tank', font=('Arial', 15))
-
-        self.canvas.create_text(700, 300, text='110 lbs', font=('Arial', 15))
-
-        self.canvas.create_text(700, 375, text='2ft, 25% of Charger', font=('Arial', 15))
-
     def makeDrops(self):
         drop = tk.OptionMenu(self, self.variable, *self.options, command=self.thing)
         drop.pack()
@@ -270,9 +426,28 @@ class mainPage(tk.Tk):
         modeDrop.pack()
         modeDrop.place(x=15, y=15, in_=self)
 
+    def makeEntry(self):
+        teamSelect = tk.Entry(self, textvariable=self.teamID, font=('Arial', 12))
+
+        sub_btn = tk.Button(self, text='Submit', command=self.update)
+
+        teamSelect.place(x=950, y=30)
+        sub_btn.place(x=1017, y=60)
+
+    def pointers(self):
+        def callback(e):
+            x = e.x
+            y = e.y
+            print("Pointer is currently at %d, %d" % (x, y))
+
+        self.bind('<Motion>', callback)
+
     def createHUD(self):
         self.teamImage()
         self.teamTitles()
         self.pitDisplay()
         self.makeDrops()
+        # self.pointers()
+        self.makeEntry()
+        self.makeSheet()
         self.mainloop()

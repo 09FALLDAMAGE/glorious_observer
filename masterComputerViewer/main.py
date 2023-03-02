@@ -1,7 +1,4 @@
-from mainPage import *
-from jsonInterpreter import *
+from mainPage import mainPage
 
-jsons(308).printDict()
-jsons(308).printMatches("Autonomous High Cubes")
-mainPage(308).createHUD()
+mainPage().createHUD()
 

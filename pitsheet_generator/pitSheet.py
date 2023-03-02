@@ -207,7 +207,7 @@ class generatePitSheet(tk.Tk):
             a = 0
             for j in range(3):
                 for k in range(4):
-                    a += round(makeDict(teams[j])[f'{constants.prefixes[k]}{code}'])
+                    a += round(makeDict(teams[j])[f'{constants.totalPrefixes[k]}{code}'])
 
             return a
         except:
