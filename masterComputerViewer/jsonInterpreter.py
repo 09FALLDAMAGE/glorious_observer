@@ -3,7 +3,7 @@ import json
 
 
 def getData(teamNumber, dataName):
-    tmpData = open(constants.jsonName)
+    tmpData = open(constants.baseFolder + constants.jsonName)
     jsonFile = json.loads(tmpData.read())
     names = jsonFile.keys()
     # turns the json file into a dictionary the python can interact with
@@ -31,7 +31,7 @@ def getData(teamNumber, dataName):
 
 def getDataStr(teamNumber, dataName):
     # does the exact same thing as the previous one but this time it's for string values not integer values
-    tmpData = open(constants.jsonName)
+    tmpData = open(constants.baseFolder + constants.jsonName)
     jsonFile = json.loads(tmpData.read());
     names = jsonFile.keys()
 
@@ -306,7 +306,17 @@ def makeList(teamNumber):
             aCharge.append(3)
 
     for i in range(len(getData(teamNumber, "Autonomous High Cones"))):
-        aTotal.append(aCharge[i] + ((getData(teamNumber, "Autonomous High Cubes")[i] + getData(teamNumber, "Autonomous High Cones")[i]) * constants.x) + ((getData(teamNumber, "Autonomous Med Cubes")[i] + getData(teamNumber, "Autonomous Med Cones")[i]) * constants.y) + ((getData(teamNumber, "Autonomous Low Cubes")[i] + getData(teamNumber, "Autonomous Low Cones")[i]) * constants.z))
+        aTotal.append(aCharge[i] + ((getData(teamNumber, "Autonomous High Cubes")[i] +
+                                     getData(teamNumber, "Autonomous High Cones")[i]) * constants.x) + ((getData(
+            teamNumber, "Autonomous Med Cubes")[i] + getData(teamNumber, "Autonomous Med Cones")[i]) * constants.y) + ((
+                                                                                                                               getData(
+                                                                                                                                   teamNumber,
+                                                                                                                                   "Autonomous Low Cubes")[
+                                                                                                                                   i] +
+                                                                                                                               getData(
+                                                                                                                                   teamNumber,
+                                                                                                                                   "Autonomous Low Cones")[
+                                                                                                                                   i]) * constants.z))
 
     EndChargeData = getDataStr(teamNumber, 'Endgame Ending Position')
     eCharge = []
@@ -323,8 +333,10 @@ def makeList(teamNumber):
     tCubes = []
     tCones = []
     for i in range(len(getData(teamNumber, "Teleop High Cones"))):
-        tCubes.append(getData(teamNumber, "Teleop High Cubes")[i] + getData(teamNumber, "Teleop Med Cubes")[i] + getData(teamNumber, "Teleop Low Cubes")[i])
-        tCones.append(getData(teamNumber, "Teleop High Cones")[i] + getData(teamNumber, "Teleop Med Cones")[i] + getData(teamNumber, "Teleop Low Cones")[i])
+        tCubes.append(getData(teamNumber, "Teleop High Cubes")[i] + getData(teamNumber, "Teleop Med Cubes")[i] +
+                      getData(teamNumber, "Teleop Low Cubes")[i])
+        tCones.append(getData(teamNumber, "Teleop High Cones")[i] + getData(teamNumber, "Teleop Med Cones")[i] +
+                      getData(teamNumber, "Teleop Low Cones")[i])
 
     team1 = {}
     # creates dictionary team1
@@ -407,8 +419,9 @@ def makeDict(teamNumber):
         return team1
     # returns the dictionary team1 to makeDict
 
+
 def checkTeam(teamNum):
-    tmpData = open(constants.jsonName)
+    tmpData = open(constants.baseFolder + constants.jsonName)
     jsonFile = json.loads(tmpData.read())
     names = jsonFile.keys()
     state = False

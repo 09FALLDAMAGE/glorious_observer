@@ -108,7 +108,7 @@ class mainPage(tk.Tk):
         self.data5['Endgame'] = newDat['eTotal']
 
     def save(self):
-        file = open("SpreadsheetData.txt", "w")
+        file = open(f"{constants.baseFolder}/SpreadsheetData.txt", "w")
 
         for i in range(self.row):
             for j in range(self.col):
@@ -118,7 +118,7 @@ class mainPage(tk.Tk):
         file.close()
 
     def load(self):
-        file = open("SpreadsheetData.txt", "r")
+        file = open(f"{constants.baseFolder}/SpreadsheetData.txt", "r")
 
         self.clear()
 
@@ -298,7 +298,7 @@ class mainPage(tk.Tk):
     def teamImage(self):
 
         try:
-            image = Image.open(f"{self.teamNum}.jpg")
+            image = Image.open(f"{constants.baseFolder}/Images/{self.teamNum}.jpg")
 
             # Resize the image using resize() method
             resize_image = image.resize((413, 310))
@@ -393,6 +393,7 @@ class mainPage(tk.Tk):
             self.pitDisplay()
             self.teamImage()
             self.thing(self.options[0])
+
         else:
             print('Not a Valid Team')
 
