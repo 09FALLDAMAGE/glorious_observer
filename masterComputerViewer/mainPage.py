@@ -9,6 +9,7 @@ from errorHandeler import *
 from pitJson import getPitData
 from jsonInterpreter import makeList, checkTeam
 
+
 class mainPage(tk.Tk):
     def __init__(self):
         super(mainPage, self).__init__()
@@ -55,7 +56,6 @@ class mainPage(tk.Tk):
                       'Endgame': [3, 2, 1, 2, 3, 1, 2, 1, 2, 0]
                       }
 
-
         self.options = [
             "Total Match Points",
             "Auto Points",
@@ -80,6 +80,18 @@ class mainPage(tk.Tk):
 
         newDat = self.propData(self.teamNum)
 
+        self.sheetFrame = tk.Frame(self)
+
+        self.sheetButtonFrame = tk.Frame(self)
+
+        self.row = 35
+        self.col = 6
+
+        self.cells = [[None for i in range(self.col)] for j in range(self.row)]
+
+        self.sheetFrame.pack()
+        self.sheetButtonFrame.pack()
+
         self.data1['Match'] = newDat['matchAxis']
         self.data1['Total Points'] = newDat['matchAxis']
 
@@ -94,6 +106,51 @@ class mainPage(tk.Tk):
 
         self.data5['Match'] = newDat['matchAxis']
         self.data5['Endgame'] = newDat['eTotal']
+
+    def save(self):
+        file = open("SpreadsheetData.txt", "w")
+
+        for i in range(self.row):
+            for j in range(self.col):
+                file.write(self.cells[i][j].get() + ",")
+            file.write("\n")
+
+        file.close()
+
+    def load(self):
+        file = open("SpreadsheetData.txt", "r")
+
+        self.clear()
+
+        for i in range(self.row):
+            temp = file.readline()
+            temp = temp.split(",")
+            for j in range(self.col):
+                self.cells[i][j].insert(0, temp[j].strip())
+
+    def clear(self):
+
+        for i in range(self.row):
+            for j in range(self.col):
+                self.cells[i][j].delete(0, 'end')
+
+    def makeSheet(self):
+        for i in range(self.row):
+            for j in range(self.col):
+                self.cells[i][j] = tk.Entry(self.sheetFrame, width=15)
+                self.cells[i][j].grid(row=i, column=j)
+
+        self.saveButton = tk.Button(self.sheetButtonFrame, text="Save", command=self.save)
+        self.saveButton.pack()
+
+        self.loadButton = tk.Button(self.sheetButtonFrame, text="Load", command=self.load)
+        self.loadButton.pack()
+
+        self.clearButton = tk.Button(self.sheetButtonFrame, text="Clear", command=self.clear)
+        self.clearButton.pack()
+
+        self.sheetFrame.place(x=900, y=150)
+        self.sheetButtonFrame.place(x=860, y=700)
 
     def thing(self, event):
         df1 = pd.DataFrame(self.data1)
@@ -232,7 +289,9 @@ class mainPage(tk.Tk):
         for i in range(matchesElapesed):
             matchAxis.append(i + 1)
 
-        fullData = {'matchAxis': matchAxis, 'Auton Total': teamDat['Autonomous Total'], 'TeleCones': teamDat['Teleop Total Cubes'], 'TeleCubes': teamDat['Teleop Total Cones'], 'eTotal': teamDat['Endgame Total']}
+        fullData = {'matchAxis': matchAxis, 'Auton Total': teamDat['Autonomous Total'],
+                    'TeleCones': teamDat['Teleop Total Cubes'], 'TeleCubes': teamDat['Teleop Total Cones'],
+                    'eTotal': teamDat['Endgame Total']}
 
         return fullData
 
@@ -259,7 +318,8 @@ class mainPage(tk.Tk):
     def teamTitles(self):
         self.canvas.create_text(self.geo[0] / 2, 40, text=f'Team {self.teamNum}', font=('Arial', 25),
                                 tags='updateContent')
-        self.canvas.create_text(self.geo[0] / 2, 90, text=f'{getPitData(str(self.teamNum))["Name"]}', font=('Arial', 25), tags='updateContent')
+        self.canvas.create_text(self.geo[0] / 2, 90, text=f'{getPitData(str(self.teamNum))["Name"]}',
+                                font=('Arial', 25), tags='updateContent')
 
     def pitDisplay(self):
         data = getPitData(str(self.teamNum))
@@ -274,7 +334,9 @@ class mainPage(tk.Tk):
 
         self.canvas.create_text(700, 300, text=f'{data["Weight"]} Lbs', font=('Arial', 15), tags='updateContent')
 
-        self.canvas.create_text(700, 375, text=f'{round(data["Width"]/ 12, constants.sigFigs)} x {round(data["Length"]/ 12, constants.sigFigs)} ft, {round((min([data["Width"]/ 12, data["Length"]/ 12]) / 8) * 100)}% of Charger', font=('Arial', 15), tags='updateContent')
+        self.canvas.create_text(700, 375,
+                                text=f'{round(data["Width"] / 12, constants.sigFigs)} x {round(data["Length"] / 12, constants.sigFigs)} ft, {round((min([data["Width"] / 12, data["Length"] / 12]) / 8) * 100)}% of Charger',
+                                font=('Arial', 15), tags='updateContent')
 
     def kill(self):
         try:
@@ -387,4 +449,5 @@ class mainPage(tk.Tk):
         self.makeDrops()
         # self.pointers()
         self.makeEntry()
+        self.makeSheet()
         self.mainloop()
