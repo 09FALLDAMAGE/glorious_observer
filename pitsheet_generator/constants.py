@@ -1,5 +1,5 @@
 class constants:
-    defaultJson = '2023test2.json'
+    defaultJson = '2023mimil.json'
 
     jsonName = defaultJson
 
