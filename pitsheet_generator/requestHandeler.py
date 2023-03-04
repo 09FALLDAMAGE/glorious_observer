@@ -19,6 +19,7 @@ class requests:
         if self.isValid:
             # print(self.dir_list)
             constants().setJsonName(jsonPath)
+
             url = "https://www.thebluealliance.com/api/v3/event/2023mimil/matches/keys"
             headers = {
                 'X-TBA-Auth-Key': 'TVv0BAIOlUYFeIMLBmOV0BLHqvhYCexcSmnIGLTsOmHdEGoy9fBqK3z0FQfygqZb',
@@ -27,10 +28,9 @@ class requests:
 
             resp = requests.get(url, headers=headers)
 
-            MatchNum = 75
 
             tmp = resp.text[1:len(resp.text)-2].replace(" ", "").replace("\"", "").replace(",", "").splitlines()
-            NameOfMatch = '2023mimil_qm' + str(MatchNum)
+            NameOfMatch = '2023mimil_qm' + str(match)
             if (NameOfMatch in tmp):
                 print(NameOfMatch)
                 url = "https://www.thebluealliance.com/api/v3/match/" + NameOfMatch +"/simple"

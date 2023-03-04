@@ -1,11 +1,12 @@
 from constants import *
 import json
 
+fileopen = open(constants.jsonName)
+jsonData = json.loads(fileopen.read())
+names = jsonData.keys()
+fileopen.close()
 
 def getData(teamNumber, dataName):
-    tmpData = open(constants.jsonName)
-    jsonFile = json.loads(tmpData.read())
-    names = jsonFile.keys()
     # turns the json file into a dictionary the python can interact with
     total = []
     # creates a blank array for total (I'm still not exactly sure what total does anymore, I think it gets an array of the values or soemthing)
@@ -16,9 +17,9 @@ def getData(teamNumber, dataName):
     for i in range(1, maxMatches):
         teamMatchAndNumber = f"{i}_{teamNumber}"
         if (teamMatchAndNumber in names):
-            valueNames = jsonFile[teamMatchAndNumber].keys()
+            valueNames = jsonData[teamMatchAndNumber].keys()
             if (dataName in valueNames):
-                total.append(int(jsonFile[teamMatchAndNumber][dataName]))
+                total.append(int(jsonData[teamMatchAndNumber][dataName]))
             else:
                 print(valueNames)
                 print("you failed, try again, idk")
@@ -31,9 +32,6 @@ def getData(teamNumber, dataName):
 
 def getDataStr(teamNumber, dataName):
     # does the exact same thing as the previous one but this time it's for string values not integer values
-    tmpData = open(constants.jsonName)
-    jsonFile = json.loads(tmpData.read());
-    names = jsonFile.keys()
 
     total = []
 
@@ -42,9 +40,9 @@ def getDataStr(teamNumber, dataName):
     for i in range(maxMatches):
         teamMatchAndNumber = f"{i}_{teamNumber}"
         if (teamMatchAndNumber in names):
-            valueNames = jsonFile[teamMatchAndNumber].keys()
+            valueNames = jsonData[teamMatchAndNumber].keys()
             if (dataName in valueNames):
-                total.append(str(jsonFile[teamMatchAndNumber][dataName]))
+                total.append(str(jsonData[teamMatchAndNumber][dataName]))
             else:
                 print(valueNames)
                 print("you failed, try again, idk")

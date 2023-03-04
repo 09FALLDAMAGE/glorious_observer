@@ -1,6 +1,6 @@
 class constants:
     jsonName = '\\2023mimil.json'
-    baseFolder = "C:\\Users\\Hot\\Desktop\\Scouting Data"
+    baseFolder = "C:\\Users\\mayaj\\OneDrive\\Desktop\\Scouting Data"
     pitName = '\\pitScoutMimil2023.json'
     defaultTeam = 67
 
