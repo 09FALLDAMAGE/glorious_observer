@@ -51,6 +51,12 @@ class generatePitSheet(tk.Tk):
 
         self.R3 = makeDict(RtNS[2])
 
+        try:
+            os.remove('the.png')
+            os.remove('the.ps')
+        except:
+            filler = 1
+
     def bases(self, padding, segmentHeight, segmentWidth, segmentPadding, topPadding, offset, teamBoxOffsetx,
               teamBoxOffsety,
               teamBoxInitOffsetY, teamBoxHeight, teamBoxWidth, teamBoxItY, color, color2):
@@ -265,20 +271,16 @@ class generatePitSheet(tk.Tk):
         self.bars('#42e3f5', 'red', matchData)
         # interface.interface().loadingBar(20)
         self.scorePredictor(self.bTeams, self.rTeams)
-        name = f"the{random.randint(1, 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999)}.ps"
         # interface.interface().loadingBar(24)
-        self.canvas.postscript(colormode='color', x = 0, y = 0, height = self.geo[1], width = self.geo[0], file=name, fontmap=('Arial', 15))
+        self.canvas.postscript(colormode='color', x = 0, y = 0, height = self.geo[1], width = self.geo[0], file='the.ps', fontmap=('Arial', 15))
+
         from PIL import Image as balls
-        psimage = balls.open(name)
+
+        psimage = balls.open('the.ps')
         psimage.save('the.png')
         os.startfile('the.png', "print")
-        # win32api.ShellExecute(0, "print", name, '/d:"%s"' % self.printername, ".", 0)
 
         self.mainloop()
-        import tkcap as ss
-        # time.sleep(1)
-        # screenshot = ss.CAP(self)
-        # screenshot.capture('toPrint.jpg')
 
         # if errorHandeler.errorCheck():
         #     self.mainloop()
