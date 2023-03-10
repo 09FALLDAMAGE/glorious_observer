@@ -35,7 +35,7 @@ class constants:
     percentSuff = ['None ', 'Docked ', 'Engaged ']
     # dictionary suffixes used in teamcard
 
-    version = '1.6'
+    version = '1.8'
 
     def setJsonName(self, jsoner):
         jsonName = jsoner

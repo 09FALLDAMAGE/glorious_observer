@@ -1,16 +1,25 @@
+import random
 import tkinter as tk
 from tkinter import Canvas
+import os
+import time
+import win32api
 
 from errorHandeler import errorUpdate
 from constants import *
 from jsonInterpreter import makeDict, autonAvg
+
+import io
 from dataTables import dataTables
 import interface
+import ghostscript
 
 
 class generatePitSheet(tk.Tk):
     def __init__(self, mN, BtNS, RtNS):
         super(generatePitSheet, self).__init__()
+
+        self.printername = 'http://[fe80::ba:d0ff:fe8f:1e3d%7]:3911/'
 
         self.geo = [1035, 800]
 
@@ -114,7 +123,7 @@ class generatePitSheet(tk.Tk):
 
                 self.canvas.create_text(padding + segmentPadding + offset + teamBoxOffsetx - 30, (
                         (segmentHeight + segmentPadding) * i) + topPadding + teamBoxOffsety + teamBoxInitOffsetY + (
-                                                y * teamBoxItY) + (teamBoxHeight / 2), text=localtext, font=(10))
+                                                y * teamBoxItY) + (teamBoxHeight / 2), text=localtext, font=('Arial', 12))
 
     # def gameCalc():
 
@@ -241,7 +250,7 @@ class generatePitSheet(tk.Tk):
             "Teleop Cones Red": self.R1['Teleop Cones Avg'] + self.R2['Teleop Cones Avg'] + self.R3['Teleop Cones Avg'],
             "Endgame Red": self.R1['Endgame Point Avg'] + self.R2['Endgame Point Avg'] + self.R3['Endgame Point Avg']}
         # interface.interface().loadingBar(10)
-        self.canvas.create_text(517.5, 70, text=f'Match {self.matchNumber}', font=('Arial', 20))
+        self.canvas.create_text(517.5, 70, text=f'Match {self.matchNumber.upper()}', font=('Arial', 20))
         # interface.interface().loadingBar(11)
         # blue
         self.bases(40, 225, 225, 10, 50, 0, 70, 20, 20, 20, 40, 30, '#add8e6', '#42e3f5')
@@ -256,8 +265,20 @@ class generatePitSheet(tk.Tk):
         self.bars('#42e3f5', 'red', matchData)
         # interface.interface().loadingBar(20)
         self.scorePredictor(self.bTeams, self.rTeams)
+        name = f"the{random.randint(1, 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999)}.ps"
         # interface.interface().loadingBar(24)
+        self.canvas.postscript(colormode='color', x = 0, y = 0, height = self.geo[1], width = self.geo[0], file=name, fontmap=('Arial', 15))
+        from PIL import Image as balls
+        psimage = balls.open(name)
+        psimage.save('the.png')
+        os.startfile('the.png', "print")
+        # win32api.ShellExecute(0, "print", name, '/d:"%s"' % self.printername, ".", 0)
+
         self.mainloop()
+        import tkcap as ss
+        # time.sleep(1)
+        # screenshot = ss.CAP(self)
+        # screenshot.capture('toPrint.jpg')
 
         # if errorHandeler.errorCheck():
         #     self.mainloop()
