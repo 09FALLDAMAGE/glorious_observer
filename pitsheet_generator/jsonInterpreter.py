@@ -1,10 +1,14 @@
 from constants import *
 import json
+import time
+
+start = time.time()
 
 fileopen = open(constants.jsonName)
 jsonData = json.loads(fileopen.read())
 names = jsonData.keys()
 fileopen.close()
+
 
 def getData(teamNumber, dataName):
     # turns the json file into a dictionary the python can interact with
@@ -114,8 +118,8 @@ def autonAvg(teamNumber):
         balancePointA = autonBalanceChargeStation[length - i] * 4
         # calculate points from balancing charging station in auton
 
-        leaveCommA = autonCrossLine[length-i] * 3
-        #calculate points from leaving the community in auton
+        leaveCommA = autonCrossLine[length - i] * 3
+        # calculate points from leaving the community in auton
         cubePointA = (getData(teamNumber, "Autonomous High Cubes")[length - i] * constants.x) + (
                 getData(teamNumber, "Autonomous Med Cubes")[length - i] * constants.y) + (
                              getData(teamNumber, "Autonomous Low Cubes")[length - i] * constants.z)
@@ -162,7 +166,8 @@ def autonAvg(teamNumber):
     autonMax = autonHighLow[len(autonHighLow) - 1]
     # gets the lowest and highest scores during auton from played matches
 
-    autoList = [autonMin, autonAvg, autonMax, autonPercents[0], autonPercents[1], autonPercents[2], cubeMinA, cubeAvgA, cubeMaxA, coneMinA, coneAvgA, coneMaxA]
+    autoList = [autonMin, autonAvg, autonMax, autonPercents[0], autonPercents[1], autonPercents[2], cubeMinA, cubeAvgA,
+                cubeMaxA, coneMinA, coneAvgA, coneMaxA]
     # create a list of values that need to be put in a dictionary
 
     return autoList
@@ -352,5 +357,11 @@ def makeDict(teamNumber):
         return team1
     # returns the dictionary team1 to makeDict
 
+
 def printDict(teamNumber):
     print(makeDict(teamNumber))
+
+print(makeDict(67))
+
+end = time.time()
+print(end - start)
