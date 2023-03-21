@@ -7,7 +7,7 @@ import win32api
 
 from errorHandeler import errorUpdate
 from constants import *
-from jsonInterpreter import makeDict, autonAvg
+from jsonInterpreter2 import makeDict
 
 import io
 from dataTables import dataTables
@@ -196,7 +196,7 @@ class generatePitSheet(tk.Tk):
                         padding + segmentPadding + offset + teamBoxOffsetx + (teamBoxWidth * x) + (teamBoxWidth / 2),
                         ((segmentHeight + segmentPadding) * i) + topPadding + teamBoxOffsety + teamBoxInitOffsetY + (
                                 y * teamBoxItY) + (teamBoxHeight / 2),
-                        text=round(teamDict[f"{constants.prefixes[y]}{constants.suffixes[x]}"]),
+                        text=round(teamDict[f"{constants.prefixes[y]}{constants.suffixes[x]}"], 2),
                         font=('Arial', '12'))
 
         for i in range(3):

@@ -3,23 +3,35 @@ class constants:
 
     jsonName = defaultJson
 
-    x = 6
+    h = 6
     # high cone/cube point value auton
-
-    y = 4
+    m = 4
     # medium cube/cone point value auton
-
-    z = 3
+    l = 3
     # low cone/cube point value auton
 
-    x1 = 5
+    h1 = 5
     # high cone/cube point value teleop
-
-    y1 = 3
+    m1 = 3
     # medium cube/cone point value teleop
-
-    z1 = 2
+    l1 = 2
     # low cone/cube point value teleop
+
+    c = 3
+    # cross line in auto
+    c1 = 2
+    # cross line in endgame
+
+    d = 8
+    # dock in auton
+    d1 = 6
+    # dock in endgame
+
+    e = 12
+    # engage in auton
+    e1 = 10
+    # engage in endgame
+
 
     barMult = 6
     # bar multipliers

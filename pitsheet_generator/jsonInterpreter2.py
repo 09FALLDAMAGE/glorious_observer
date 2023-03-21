@@ -1,8 +1,6 @@
 from constants import *
 import json
-import time
 
-start = time.time()
 
 rawFile = open(constants.jsonName)
 jsonData = json.loads(rawFile.read())
@@ -112,15 +110,108 @@ def scrapeJson(teamNumber):
     for i in range(3):
         endgamePercents[i] = (endgamePercents[i] / matchesElapsed) * 100
         autonPercents[i] = (autonPercents[i] / matchesElapsed) * 100
+
         # this calculates the percent of the time that a robot climbs
 
     avgs['Endgame Ending Position'] = endgamePercents
+    print(avgs['Endgame Ending Position'])
     avgs['Autonomous End Of Auton Pos'] = autonPercents
+    print(avgs['Autonomous End Of Auton Pos'])
     # injecting the percent arrays
+    lows['Autonomous Cross Line'] = 0
+    highs['Autonomous Cross Line'] = 0
 
     return [lows, avgs, highs]
 
+def scrapePoints(teamNumber):
+    dat = scrapeJson(teamNumber)
+    for i in range(3):
+        dat[i]['Autonomous High Cubes'] *= constants.h
+        dat[i]['Autonomous Med Cubes'] *= constants.m
+        dat[i]['Autonomous Low Cubes'] *= constants.l
 
-print(scrapeJson(67))
-end = time.time()
-print(end - start)
+        dat[i]['Autonomous High Cones'] *= constants.h
+        dat[i]['Autonomous Med Cones'] *= constants.m
+        dat[i]['Autonomous Low Cones'] *= constants.l
+
+        dat[i]['Teleop High Cubes'] *= constants.h1
+        dat[i]['Teleop Med Cubes'] *= constants.m1
+        dat[i]['Teleop Low Cubes'] *= constants.l1
+
+        dat[i]['Teleop High Cones'] *= constants.h1
+        dat[i]['Teleop Med Cones'] *= constants.m1
+        dat[i]['Teleop Low Cones'] *= constants.l1
+
+        dat[i]['Auton Point'] = (dat[i]['Autonomous Cross Line'] * constants.m) + dat[i]['Autonomous High Cubes'] + \
+            dat[i]['Autonomous Med Cubes'] + dat[i]['Autonomous Low Cubes'] + dat[i]['Autonomous High Cones'] + \
+            dat[i]['Autonomous Med Cones'] + dat[i]['Autonomous Low Cones']
+
+        dat[i]['Endgame Point'] = (dat[1]['Endgame Ending Position'][0] * constants.e1) + (dat[1]['Endgame Ending Position'][1] * constants.d1)
+
+    return dat
+
+
+def makeDict(teamNumber):
+    dat = scrapePoints(teamNumber)
+
+    try:
+        team1 = {}
+        # creates dictionary team1
+
+        team1["Auton Point Low"] = dat[0]['Auton Point']
+        team1["Auton Point Avg"] = dat[1]['Auton Point']
+        team1["Auton Point High"] = dat[2]['Auton Point']
+        print('checkpoint 1.2')
+        team1["Auton None Percent"] = dat[1]['Autonomous End Of Auton Pos'][2]
+        print('checkpoint 1.5')
+        team1["Auton Docked Percent"] = dat[1]['Autonomous End Of Auton Pos'][1]
+        team1["Auton Engaged Percent"] = dat[1]['Autonomous End Of Auton Pos'][0]
+        print('checkpoint 2')
+        team1["Auton Cubes Low"] = dat[0]['Autonomous Low Cubes'] + dat[0]['Autonomous Med Cubes'] + dat[0]['Autonomous High Cubes']
+        team1["Auton Cubes Avg"] = dat[1]['Autonomous Low Cubes'] + dat[1]['Autonomous Med Cubes'] + dat[1]['Autonomous High Cubes']
+        team1["Auton Cubes High"] = dat[2]['Autonomous Low Cubes'] + dat[2]['Autonomous Med Cubes'] + dat[2]['Autonomous High Cubes']
+        team1["Auton Cones Low"] = dat[0]['Autonomous Low Cones'] + dat[0]['Autonomous Med Cones'] + dat[0]['Autonomous High Cones']
+        team1["Auton Cones Avg"] = dat[1]['Autonomous Low Cones'] + dat[1]['Autonomous Med Cones'] + dat[1]['Autonomous High Cones']
+        team1["Auton Cones High"] = dat[2]['Autonomous Low Cones'] + dat[2]['Autonomous Med Cones'] + dat[2]['Autonomous High Cones']
+        team1["Teleop Cubes Low"] = dat[0]['Teleop Low Cubes'] + dat[0]['Teleop Med Cubes'] + dat[0]['Teleop High Cubes']
+        team1["Teleop Cubes Avg"] = dat[1]['Teleop Low Cubes'] + dat[1]['Teleop Med Cubes'] + dat[1]['Teleop High Cubes']
+        team1["Teleop Cubes High"] = dat[2]['Teleop Low Cubes'] + dat[2]['Teleop Med Cubes'] + dat[2]['Teleop High Cubes']
+        team1["Teleop Cones Low"] = dat[0]['Teleop Low Cones'] + dat[0]['Teleop Med Cones'] + dat[0]['Teleop High Cones']
+        team1["Teleop Cones Avg"] = dat[1]['Teleop Low Cones'] + dat[1]['Teleop Med Cones'] + dat[1]['Teleop High Cones']
+        team1["Teleop Cones High"] = dat[2]['Teleop Low Cones'] + dat[2]['Teleop Med Cones'] + dat[2]['Teleop High Cones']
+        team1["Endgame None Percent"] = dat[1]['Endgame Ending Position'][2]
+        team1["Endgame Docked Percent"] = dat[1]['Endgame Ending Position'][1]
+        team1["Endgame Engaged Percent"] = dat[1]['Endgame Ending Position'][0]
+        team1["Endgame Point Low"] = "null"
+        team1["Endgame Point Avg"] = "null"
+        team1["Endgame Point High"] = "null"
+
+
+        # populates the dictionary team1
+
+        return team1
+    except:
+        team1 = {}
+        # creates dictionary team1
+        team1["Auton Point Low"] = "null"
+        team1["Auton Point Avg"] = "null"
+        team1["Auton Point High"] = "null"
+        team1["Auton Nothing Percent"] = "null"
+        team1["Auton Docked Percent"] = "null"
+        team1["Auton Engaged Percent"] = "null"
+        team1["Teleop Cubes Low"] = "null"
+        team1["Teleop Cubes Avg"] = "null"
+        team1["Teleop Cubes High"] = "null"
+        team1["Teleop Cones Low"] = "null"
+        team1["Teleop Cones Avg"] = "null"
+        team1["Teleop Cones High"] = "null"
+        team1["Endgame Point Low"] = "null"
+        team1["Endgame Point Avg"] = "null"
+        team1["Endgame Point High"] = "null"
+        team1["Endgame None Percent"] = "null"
+        team1["Endgame Docked Percent"] = "null"
+        team1["Endgame Engaged Percent"] = "null"
+        # populates the dictionary team1
+
+        return team1
+    # returns the dictionary team1 to makeDict
