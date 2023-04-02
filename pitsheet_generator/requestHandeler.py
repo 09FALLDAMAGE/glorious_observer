@@ -13,8 +13,9 @@ class requests:
 
         self.dir_list = os.listdir()
         self.overide = False
-        
-    def refresh(self):
+
+    def refresh(self, eventCode):
+        # event code example: 2023mimil
         return None
 
     def start(self, match, jsonPath):

@@ -16,6 +16,8 @@ class interface(tk.Tk):
         self.match_var = tk.StringVar()
         self.json_var = tk.StringVar()
 
+        self.eventCode = tk.StringVar()
+
         self.canvas = Canvas(self, width=250, height=140)
         self.canvas.pack()
 
@@ -24,6 +26,9 @@ class interface(tk.Tk):
     def loadingBar(self, barState):
         old = True
         # self.canvas.create_rectangle(10, 110, 10 + (barState * 5), 130, fill='light green')
+
+    def getMatches(self):
+        requests.refresh(self.eventCode.get())
 
     def submit(self):
         matchReq = self.match_var.get()
@@ -44,6 +49,10 @@ class interface(tk.Tk):
 
         sub_btn = tk.Button(self, text='generate', command=self.submit)
 
+        ref_entry = tk.Entry(self, textvariable=self.eventCode, font=('calibre', 10, 'normal'))
+
+        ref_btn = tk.Button(self, text='refresh', command=self.getMatches)
+
         json_entry.insert(0, constants.jsonName)
 
         match_label.place(x=23, y=10)
@@ -53,6 +62,9 @@ class interface(tk.Tk):
         json_entry.place(x=80, y=40)
 
         sub_btn.place(x=100, y=70)
+
+        ref_entry.place(x=90, y=110)
+        ref_btn.place(x=15, y=105)
 
         self.loadingBar(0)
 
