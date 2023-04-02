@@ -13,6 +13,9 @@ class requests:
 
         self.dir_list = os.listdir()
         self.overide = False
+        
+    def refresh(self):
+        return None
 
     def start(self, match, jsonPath):
         self.checkValid(jsonPath)
