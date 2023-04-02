@@ -1,5 +1,5 @@
 class constants:
-    defaultJson = '2023mimil.json'
+    defaultJson = '2023mitry.json'
 
     jsonName = defaultJson
 
@@ -36,7 +36,7 @@ class constants:
     barMult = 6
     # bar multipliers
 
-    prefixes = ['Auton Cones ', 'Auton Cubes ', 'Teleop Cones ', 'Teleop Cubes ', 'Endgame Point ', 'Auton Point ']
+    prefixes = ['Auton Point ', 'Auton Piece ', 'Teleop Cones ', 'Teleop Cubes ', 'Endgame Point ']
     # dictionary prefixes used in teamcard
     totalPrefixes = ['Auton Point ', 'Teleop Cones ', 'Teleop Cubes ', 'Endgame Point ', 'Auton Point ']
 
@@ -47,7 +47,7 @@ class constants:
     percentSuff = ['None ', 'Docked ', 'Engaged ']
     # dictionary suffixes used in teamcard
 
-    version = '1.8'
+    version = '2.0'
 
     def setJsonName(self, jsoner):
         jsonName = jsoner

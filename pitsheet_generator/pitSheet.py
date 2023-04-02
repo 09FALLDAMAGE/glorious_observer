@@ -117,9 +117,9 @@ class generatePitSheet(tk.Tk):
 
             for i in range(3):
                 if (y == 0):
-                    localtext = 'A Cone'
+                    localtext = 'A Point'
                 elif (y == 1):
-                    localtext = 'A Cube'
+                    localtext = 'A Piece'
                 elif (y == 2):
                     localtext = 'Cones'
                 elif (y == 3):
@@ -137,41 +137,41 @@ class generatePitSheet(tk.Tk):
     def bars(self, color, color2, teamDat):
         self.canvas.create_rectangle(310, 200, 310 + (teamDat["Auton Points Blue"] * constants.barMult), 175,
                                      fill=color)
-        self.canvas.create_text(700, 177, text=teamDat["Auton Points Blue"], font=('Arial', '15'))
+        self.canvas.create_text(700, 177, text=round(teamDat["Auton Points Blue"], 2), font=('Arial', '15'))
 
         self.canvas.create_rectangle(310, 210, 310 + (teamDat["Auton Points Red"] * constants.barMult), 235,
                                      fill=color2)
-        self.canvas.create_text(700, 222.5, text=teamDat["Auton Points Red"], font=('Arial', '15'))
+        self.canvas.create_text(700, 222.5, text=round(teamDat["Auton Points Red"], 2), font=('Arial', '15'))
 
         self.canvas.create_text(517.5, 145, text='Auton Points', font=('Arial', '15'))
 
         self.canvas.create_rectangle(310, 200 + 150, 310 + (teamDat["Teleop Cubes Blue"] * constants.barMult),
                                      175 + 150, fill=color)
-        self.canvas.create_text(700, 177 + 150, text=teamDat["Teleop Cubes Blue"], font=('Arial', '15'))
+        self.canvas.create_text(700, 177 + 150, text=round(teamDat["Teleop Cubes Blue"], 2), font=('Arial', '15'))
 
         self.canvas.create_rectangle(310, 210 + 150, 310 + (teamDat["Teleop Cubes Red"] * constants.barMult), 235 + 150,
                                      fill=color2)
-        self.canvas.create_text(700, 222.5 + 150, text=teamDat["Teleop Cubes Red"], font=('Arial', '15'))
+        self.canvas.create_text(700, 222.5 + 150, text=round(teamDat["Teleop Cubes Red"], 2), font=('Arial', '15'))
 
         self.canvas.create_text(517.5, 145 + 150, text='Teleop Cubes', font=('Arial', 15))
 
         self.canvas.create_rectangle(310, 200 + 300, 310 + (teamDat["Teleop Cones Blue"] * constants.barMult),
                                      175 + 300, fill=color)
-        self.canvas.create_text(700, 177 + 300, text=teamDat["Teleop Cones Blue"], font=('Arial', '15'))
+        self.canvas.create_text(700, 177 + 300, text=round(teamDat["Teleop Cones Blue"], 2), font=('Arial', '15'))
 
         self.canvas.create_rectangle(310, 210 + 300, 310 + (teamDat["Teleop Cones Red"] * constants.barMult), 235 + 300,
                                      fill=color2)
-        self.canvas.create_text(700, 222.5 + 300, text=teamDat["Teleop Cones Red"], font=('Arial', '15'))
+        self.canvas.create_text(700, 222.5 + 300, text=round(teamDat["Teleop Cones Red"], 2), font=('Arial', '15'))
 
         self.canvas.create_text(517.5, 145 + 300, text='Teleop Cones', font=('Arial', '15'))
 
         self.canvas.create_rectangle(310, 200 + 450, 310 + (teamDat["Endgame Blue"] * constants.barMult), 175 + 450,
                                      fill=color)
-        self.canvas.create_text(700, 177 + 450, text=teamDat["Endgame Blue"], font=('Arial', '15'))
+        self.canvas.create_text(700, 177 + 450, text=round(teamDat["Endgame Blue"], 2), font=('Arial', '15'))
 
         self.canvas.create_rectangle(310, 210 + 450, 310 + (teamDat["Endgame Red"] * constants.barMult), 235 + 450,
                                      fill=color2)
-        self.canvas.create_text(700, 222.5 + 450, text=teamDat["Endgame Red"], font=('Arial', '15'))
+        self.canvas.create_text(700, 222.5 + 450, text=round(teamDat["Endgame Red"], 2), font=('Arial', '15'))
 
         self.canvas.create_text(517.5, 145 + 450, text='Endgame', font=('Arial', '15'))
 
@@ -215,7 +215,7 @@ class generatePitSheet(tk.Tk):
                     # print(autonAvg(teamNums[i])[3 + k])
                     self.canvas.create_text(padding + segmentPadding + offset + 20 + (132 * j) + (28 * k),
                                             ((segmentHeight + segmentPadding) * i) + topPadding + segmentHeight - 15,
-                                            text=f'{round((teamDict[f"{constants.percentPrefix[j]}{constants.percentSuff[k]}Percent"] * 100))}%',
+                                            text=f'{round(teamDict[f"{constants.percentPrefix[j]}{constants.percentSuff[k]}Percent"])}%',
                                             font=('Arial', '8'))
 
     def totalCalc(self, teams, code):
@@ -231,13 +231,13 @@ class generatePitSheet(tk.Tk):
 
     def scorePredictor(self, bTeams, rTeams):
 
-        self.canvas.create_rectangle(300, 70, 400, 100, fill='#42e3f5')
+        self.canvas.create_rectangle(300, 70, 400, 100, fill='#5bc8e1')
         # blue
         self.canvas.create_text(350, 85,
                                 text=f"{self.totalCalc(bTeams, 'Low')}|{self.totalCalc(bTeams, 'Avg')}|{self.totalCalc(bTeams, 'High')}",
                                 font=('Arial', '15'))
 
-        self.canvas.create_rectangle(620, 70, 720, 100, fill='red')
+        self.canvas.create_rectangle(620, 70, 720, 100, fill='#eb6464')
         # red
         self.canvas.create_text(670, 85,
                                 text=f"{self.totalCalc(rTeams, 'Low')}|{self.totalCalc(rTeams, 'Avg')}|{self.totalCalc(rTeams, 'High')}",
@@ -260,16 +260,16 @@ class generatePitSheet(tk.Tk):
         self.canvas.create_text(517.5, 70, text=f'Match {self.matchNumber.upper()}', font=('Arial', '20'))
         # interface.interface().loadingBar(11)
         # blue
-        self.bases(40, 225, 225, 10, 50, 0, 70, 20, 20, 20, 40, 30, '#add8e6', '#42e3f5')
+        self.bases(40, 225, 225, 10, 50, 0, 70, 20, 20, 20, 40, 30, '#add8e6', '#5bc8e1')
         # interface.interface().loadingBar(13)
         self.teamcard(40, 225, 225, 10, 50, 0, 70, 20, 20, 20, 40, 30, '#add8e6', '#42e3f5', self.bTeams)
         # interface.interface().loadingBar(15)
         # red
-        self.bases(40, 225, 225, 10, 50, 700, 70, 20, 20, 20, 40, 30, '#ffaaab', 'red')
+        self.bases(40, 225, 225, 10, 50, 700, 70, 20, 20, 20, 40, 30, '#ffaaab', '#eb6464')
         # interface.interface().loadingBar(17)
-        self.teamcard(40, 225, 225, 10, 50, 700, 70, 20, 20, 20, 40, 30, '#add8e6', '#42e3f5', self.rTeams)
+        self.teamcard(40, 225, 225, 10, 50, 700, 70, 20, 20, 20, 40, 30, '#add8e6', '#eb6464', self.rTeams)
         # interface.interface().loadingBar(18)
-        self.bars('#42e3f5', 'red', matchData)
+        self.bars('#5bc8e1', '#eb6464', matchData)
         # interface.interface().loadingBar(20)
         self.scorePredictor(self.bTeams, self.rTeams)
         # interface.interface().loadingBar(24)
