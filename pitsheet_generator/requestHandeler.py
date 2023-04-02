@@ -12,7 +12,7 @@ class requests:
         self.isValid = False
 
         self.dir_list = os.listdir()
-        self.overide = False
+        self.overide = True
 
     def refresh(self, eventCode):
         # event code example: 2023mimil
@@ -52,8 +52,8 @@ class requests:
                 print(red)
                 print(blue)
             if self.overide:
-                red = [67, 3538, 9204]
-                blue = [308, 1025, 7225]
+                red = [67, 67, 67]
+                blue = [67, 67, 67]
             generatePitSheet(match, blue, red).generateSheet()
 
     def checkValid(self, path):

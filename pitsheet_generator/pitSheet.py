@@ -121,7 +121,7 @@ class generatePitSheet(tk.Tk):
                 elif (y == 1):
                     localtext = 'A Piece'
                 elif (y == 2):
-                    localtext = 'Cones'
+                    localtext = 'T Point'
                 elif (y == 3):
                     localtext = 'Cubes'
                 elif (y == 4):
@@ -178,20 +178,13 @@ class generatePitSheet(tk.Tk):
     def teamcard(self, padding, segmentHeight, segmentWidth, segmentPadding, topPadding, offset, teamBoxOffsetx,
                  teamBoxOffsety,
                  teamBoxInitOffsetY, teamBoxHeight, teamBoxWidth, teamBoxItY, color, color2, teamNums):
+
         for y in range(5):
-            firstString = constants.prefixes[y]
             for i in range(3):
                 teamDict = makeDict(teamNums[i])
 
                 for x in range(3):
-                    secondString = constants.suffixes[x]
 
-                    if y == 0:
-                        percent = ''
-                    elif y == 3:
-                        percent = ''
-                    else:
-                        percent = ''
                     self.canvas.create_text(
                         padding + segmentPadding + offset + teamBoxOffsetx + (teamBoxWidth * x) + (teamBoxWidth / 2),
                         ((segmentHeight + segmentPadding) * i) + topPadding + teamBoxOffsety + teamBoxInitOffsetY + (
@@ -207,15 +200,20 @@ class generatePitSheet(tk.Tk):
             for j in range(2):
                 self.canvas.create_text(padding + segmentPadding + offset + 45 + (135 * j),
                                         ((segmentHeight + segmentPadding) * i) + topPadding + segmentHeight - 30,
-                                        text='None, Dock, Eng',
+                                        text='Atmpts, Dock, Eng',
                                         font=('Arial', '8'))
                 for k in range(3):
                     # print(f"{constants.percentPrefix[j]}{constants.percentSuff[k]}Percent")
                     # print(teamDict[f"{constants.percentPrefix[j]}{constants.percentSuff[k]}Percent"])
                     # print(autonAvg(teamNums[i])[3 + k])
+                    if k == 0:
+                        percent = ''
+                    else:
+                        percent = '%'
+
                     self.canvas.create_text(padding + segmentPadding + offset + 20 + (132 * j) + (28 * k),
                                             ((segmentHeight + segmentPadding) * i) + topPadding + segmentHeight - 15,
-                                            text=f'{round(teamDict[f"{constants.percentPrefix[j]}{constants.percentSuff[k]}Percent"])}%',
+                                            text=f'{teamDict[f"{constants.percentPrefix[j]}{constants.percentSuff[k]}"]}{percent}',
                                             font=('Arial', '8'))
 
     def totalCalc(self, teams, code):

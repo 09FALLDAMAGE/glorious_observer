@@ -1,3 +1,4 @@
+import constants
 from constants import *
 import json
 
@@ -21,6 +22,8 @@ def scrapeJson(teamNumber):
     autonPieceAvg = 0
     autonPiecesLow = 999999999
     autonPiecesHigh = 0
+    autonAttempts = 0
+    endgameAttempts = 0
     matchNums = []
 
     lows = {}
@@ -28,21 +31,12 @@ def scrapeJson(teamNumber):
     teamMD = {}
     avgs = {}
     autonPercents = [0, 0, 0]
-    endgamePercents = [0, 0, 0]
+    endgamePercents = [0, 0, 0, 0]
     autonPieces = []
     # all the dictionarys and arrays that data is put in
 
     for i in range(1, maxMatches):
         teamMatch = f"{i}_{teamNumber}"
-
-
-
-        if i == 1:
-            jsonData.pop(teamMatch, None)
-        if i == 2:
-            jsonData.pop(teamMatch, None)
-
-
 
         # creating a key that interfaces with the first level of the json
         if teamMatch in matches:
@@ -102,30 +96,43 @@ def scrapeJson(teamNumber):
 
                     # this gets the low and high values more efficiently than max() or min()
 
-                if key == 'Endgame Ending Position':
-                    # calculating climbing percentages for endgame
-                    if teamMD[i][key] == 'Engaged':
-                        endgamePercents[0] += 1
-                    elif teamMD[i][key] == 'Docked':
-                        endgamePercents[1] += 1
-                    elif teamMD[i][key] == 'Nothing':
-                        endgamePercents[2] += 1
-
-
-                elif key == 'Autonomous End Of Auton Pos':
-                    # calculating climbing percentages for auton
-                    if teamMD[i][key] == 'Engaged':
-                        autonPercents[0] += 1
-                    elif teamMD[i][key] == 'Docked':
-                        autonPercents[1] += 1
-                    elif teamMD[i][key] == 'Nothing':
-                        autonPercents[2] += 1
-
                 if teamMD[i][key] == 'true':
                     teamMD[i][key] = 1
                 elif teamMD[i][key] == 'false':
                     teamMD[i][key] = 0
                 # this converts boolean values to a 1 or a 0, so we can do math
+
+                if key == 'Endgame Ending Position':
+                    # calculating climbing percentages for endgame
+
+                    if teamMD[i]["Endgame Charge Attempt"] == 1:
+                        endgameAttempts += 1
+                        if teamMD[i][key] == 'Engaged':
+                            endgamePercents[0] += 1
+                        elif teamMD[i][key] == 'Docked':
+                            endgamePercents[1] += 1
+                        elif teamMD[i][key] == 'Nothing':
+                            endgamePercents[2] += 1
+                    else:
+                        if teamMD[i][key] == 'Parked':
+                            endgamePercents[3] += 1
+                        elif teamMD[i][key] == 'Nothing':
+                            endgamePercents[2] += 1
+
+                if key == 'Autonomous End Of Auton Pos':
+                    # calculating climbing percentages for auton
+
+                    if teamMD[i]["Autonomous Charge Attempt"] == 1:
+                        autonAttempts += 1
+
+                        if teamMD[i][key] == 'Engaged':
+                            autonPercents[0] += 1
+                        elif teamMD[i][key] == 'Docked':
+                            autonPercents[1] += 1
+                        elif teamMD[i][key] == 'Nothing':
+                            autonPercents[2] += 1
+                    else:
+                        autonPercents[2] += 1
 
                 if type(teamMD[i][key]) == int:
                     # this runs the function only for numbers
@@ -135,14 +142,26 @@ def scrapeJson(teamNumber):
             # this divides out the averages for each category
 
     for i in range(3):
-        endgamePercents[i] = (endgamePercents[i] / matchesElapsed) * 100
-        autonPercents[i] = (autonPercents[i] / matchesElapsed) * 100
+        try:
+            endgamePercents[i] = (endgamePercents[i] / endgameAttempts) * 100
+        except:
+            endgamePercents[i] = 0
 
-        # this calculates the percent of the time that a robot climbs
+        try:
+            autonPercents[i] = (autonPercents[i] / autonAttempts) * 100
+        except:
+            autonPercents[i] = 0
+
+
+    endgamePercents[3] = endgamePercents[3] / matchesElapsed
+
+    # this calculates the percent of the time that a robot climbs
 
     avgs['Endgame Ending Position'] = endgamePercents
     avgs['Auton Piece'] = autonPieceAvg
     avgs['Autonomous End Of Auton Pos'] = autonPercents
+    avgs['Auton Attempts'] = autonAttempts
+    avgs['Endgame Attempts'] = endgameAttempts
     # injecting the percent arrays
     lows['Autonomous Cross Line'] = 0
     lows['Auton Piece'] = autonPiecesLow
@@ -171,15 +190,43 @@ def scrapePoints(teamNumber):
         dat[i]['Teleop Med Cones'] *= constants.m1
         dat[i]['Teleop Low Cones'] *= constants.l1
 
-        dat[i]['Auton Point'] = (dat[i]['Autonomous Cross Line'] * constants.m) + dat[i]['Autonomous High Cubes'] + \
+        dat[i]['Teleop Point'] = dat[i]['Teleop High Cubes'] + dat[i]['Teleop Med Cubes'] + \
+                                 dat[i]['Teleop Low Cubes'] + dat[i]['Teleop High Cones'] + \
+                                 dat[i]['Teleop Med Cones'] + dat[i]['Teleop Low Cones']
+
+        dat[i]['Auton Point'] = (dat[i]['Autonomous Cross Line'] * constants.c) + dat[i]['Autonomous High Cubes'] + \
                                 dat[i]['Autonomous Med Cubes'] + dat[i]['Autonomous Low Cubes'] + dat[i][
                                     'Autonomous High Cones'] + \
                                 dat[i]['Autonomous Med Cones'] + dat[i]['Autonomous Low Cones']
 
     dat[0]['Endgame Point'] = 0
     dat[1]['Endgame Point'] = ((dat[1]['Endgame Ending Position'][0] / 100) * constants.e1) + (
-                (dat[1]['Endgame Ending Position'][1] / 100) * constants.d1)
+            (dat[1]['Endgame Ending Position'][1] / 100) * constants.d1) + (
+            (dat[1]['Endgame Ending Position'][1] / 100) * constants.c1)
     dat[2]['Endgame Point'] = 10
+
+    # inefficent low endgame calcs
+
+    if (dat[1]['Endgame Ending Position'][0] / 100) != 0:
+        dat[2]['Endgame Point'] = constants.e1
+    elif (dat[1]['Endgame Ending Position'][1] / 100) != 0:
+        dat[2]['Endgame Point'] = constants.d1
+    elif dat[1]['Endgame Ending Position'][3] != 0:
+        dat[2]['Endgame Point'] = constants.c1
+    else:
+        dat[2]['Endgame Point'] = 0
+
+
+    if (dat[1]['Endgame Ending Position'][2] / 100) != 0:
+        dat[0]['Endgame Point'] = 0
+    elif (dat[1]['Endgame Ending Position'][3] / 100) != 0:
+        dat[0]['Endgame Point'] = constants.c1
+    elif dat[1]['Endgame Ending Position'][1] != 0:
+        dat[0]['Endgame Point'] = constants.d1
+    elif dat[1]['Endgame Ending Position'][0] != 0:
+        dat[0]['Endgame Point'] = constants.e1
+    else:
+        dat[0]['Endgame Point'] = 9999
 
     return dat
 
@@ -198,10 +245,16 @@ def makeDict(teamNumber):
         team1["Auton Piece Avg"] = dat[1]['Auton Piece']
         team1["Auton Piece High"] = dat[2]['Auton Piece']
 
-        team1["Auton None Percent"] = dat[1]['Autonomous End Of Auton Pos'][2]
+        team1["Teleop Point Low"] = dat[0]['Teleop Point']
+        team1["Teleop Point Avg"] = dat[1]['Teleop Point']
+        team1["Teleop Point High"] = dat[2]['Teleop Point']
 
-        team1["Auton Docked Percent"] = dat[1]['Autonomous End Of Auton Pos'][1]
-        team1["Auton Engaged Percent"] = dat[1]['Autonomous End Of Auton Pos'][0]
+        team1["Auton Attempts"] = dat[1]['Auton Attempts']
+        team1["Endgame Attempts"] = dat[1]['Endgame Attempts']
+
+        team1["Auton None Percent"] = round(dat[1]['Autonomous End Of Auton Pos'][2])
+        team1["Auton Docked Percent"] = round(dat[1]['Autonomous End Of Auton Pos'][1])
+        team1["Auton Engaged Percent"] = round(dat[1]['Autonomous End Of Auton Pos'][0])
 
         team1["Auton Cubes Low"] = dat[0]['Autonomous Low Cubes'] + dat[0]['Autonomous Med Cubes'] + dat[0][
             'Autonomous High Cubes']
@@ -227,9 +280,9 @@ def makeDict(teamNumber):
             'Teleop High Cones']
         team1["Teleop Cones High"] = dat[2]['Teleop Low Cones'] + dat[2]['Teleop Med Cones'] + dat[2][
             'Teleop High Cones']
-        team1["Endgame None Percent"] = dat[1]['Endgame Ending Position'][2]
-        team1["Endgame Docked Percent"] = dat[1]['Endgame Ending Position'][1]
-        team1["Endgame Engaged Percent"] = dat[1]['Endgame Ending Position'][0]
+        team1["Endgame None Percent"] = round(dat[1]['Endgame Ending Position'][2])
+        team1["Endgame Docked Percent"] = round(dat[1]['Endgame Ending Position'][1])
+        team1["Endgame Engaged Percent"] = round(dat[1]['Endgame Ending Position'][0])
         team1["Endgame Point Low"] = dat[0]['Endgame Point']
         team1["Endgame Point Avg"] = dat[1]['Endgame Point']
         team1["Endgame Point High"] = dat[2]['Endgame Point']
