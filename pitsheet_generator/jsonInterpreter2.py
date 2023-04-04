@@ -20,8 +20,11 @@ def scrapeJson(teamNumber):
     maxMatches = 76
     matchesElapsed = 0
     autonPieceAvg = 0
+    telePieceAvg = 0
     autonPiecesLow = 999999999
     autonPiecesHigh = 0
+    telePiecesLow = 999999999
+    telePiecesHigh = 0
     autonAttempts = 0
     endgameAttempts = 0
     matchNums = []
@@ -33,6 +36,7 @@ def scrapeJson(teamNumber):
     autonPercents = [0, 0, 0]
     endgamePercents = [0, 0, 0, 0]
     autonPieces = []
+    telePieces = []
     # all the dictionarys and arrays that data is put in
 
     for i in range(1, maxMatches):
@@ -69,6 +73,21 @@ def scrapeJson(teamNumber):
             autonPiecesHigh = autonPieces[i]
 
     autonPieceAvg /= matchesElapsed
+
+
+    for i in range(matchesElapsed):
+        telePieces.append(int(teamMD[i]["Teleop High Cones"]) + int(teamMD[i]["Teleop High Cubes"]) + int(
+            teamMD[i]["Teleop Low Cones"]) + int(teamMD[i]["Teleop Low Cubes"]) + int(
+            teamMD[i]["Teleop Med Cones"]) + int(teamMD[i]["Teleop Med Cubes"]))
+        telePieceAvg += telePieces[i]
+
+        if telePieces[i] < telePiecesLow:
+            telePiecesLow = telePieces[i]
+
+        if telePieces[i] > telePiecesHigh:
+            telePiecesHigh = telePieces[i]
+
+    telePieceAvg /= matchesElapsed
 
     for key in teamMD[0].keys():
         # this looks through all the keys in the first match the team played as a base
@@ -159,6 +178,7 @@ def scrapeJson(teamNumber):
 
     avgs['Endgame Ending Position'] = endgamePercents
     avgs['Auton Piece'] = autonPieceAvg
+    avgs['Teleop Piece'] = telePieceAvg
     avgs['Autonomous End Of Auton Pos'] = autonPercents
     avgs['Auton Attempts'] = autonAttempts
     avgs['Endgame Attempts'] = endgameAttempts
@@ -166,6 +186,8 @@ def scrapeJson(teamNumber):
     lows['Autonomous Cross Line'] = 0
     lows['Auton Piece'] = autonPiecesLow
     highs['Auton Piece'] = autonPiecesHigh
+    lows['Teleop Piece'] = autonPiecesLow
+    highs['Teleop Piece'] = autonPiecesHigh
     highs['Autonomous Cross Line'] = 0
 
     return [lows, avgs, highs]
@@ -248,6 +270,9 @@ def makeDict(teamNumber):
         team1["Teleop Point Low"] = dat[0]['Teleop Point']
         team1["Teleop Point Avg"] = dat[1]['Teleop Point']
         team1["Teleop Point High"] = dat[2]['Teleop Point']
+        team1["Teleop Piece Low"] = dat[0]['Teleop Piece']
+        team1["Teleop Piece Avg"] = dat[1]['Teleop Piece']
+        team1["Teleop Piece High"] = dat[2]['Teleop Piece']
 
         team1["Auton Attempts"] = dat[1]['Auton Attempts']
         team1["Endgame Attempts"] = dat[1]['Endgame Attempts']

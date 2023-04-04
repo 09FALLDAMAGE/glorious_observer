@@ -123,7 +123,7 @@ class generatePitSheet(tk.Tk):
                 elif (y == 2):
                     localtext = 'T Point'
                 elif (y == 3):
-                    localtext = 'Cubes'
+                    localtext = 'T Piece'
                 elif (y == 4):
                     localtext = 'End'
 
