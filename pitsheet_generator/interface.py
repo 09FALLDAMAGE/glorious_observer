@@ -21,12 +21,6 @@ class interface(tk.Tk):
         self.canvas = Canvas(self, width=250, height=140)
         self.canvas.pack()
 
-        # self.canvas.create_rectangle(10, 110, 240, 130, fill='red')
-
-    def loadingBar(self, barState):
-        old = True
-        # self.canvas.create_rectangle(10, 110, 10 + (barState * 5), 130, fill='light green')
-
     def getMatches(self):
         requests().refresh(self.eventCode.get())
 
