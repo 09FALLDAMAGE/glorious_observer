@@ -60,8 +60,6 @@ class interface(tk.Tk):
         ref_entry.place(x=90, y=110)
         ref_btn.place(x=15, y=105)
 
-        self.loadingBar(0)
-
         # match_label.grid(row=0, column=0)
         # match_entry.grid(row=0, column=1)
         # json_label.grid(row=1, column=0)
