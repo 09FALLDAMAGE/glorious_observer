@@ -5,6 +5,7 @@ import os
 import requests as rq
 import json
 import sys
+import sqlite3
 
 
 class requests:
@@ -22,38 +23,13 @@ class requests:
         self.checkValid(jsonPath)
 
         if self.isValid:
-            # print(self.dir_list)
-            constants().setJsonName(jsonPath)
-
-            url = "https://www.thebluealliance.com/api/v3/event/2023mitry/matches/keys"
-            headers = {
-                'X-TBA-Auth-Key': 'TVv0BAIOlUYFeIMLBmOV0BLHqvhYCexcSmnIGLTsOmHdEGoy9fBqK3z0FQfygqZb',
-                'accept': 'application/json'
-            }
-
-            resp = rq.get(url, headers=headers)
-
-
-            tmp = resp.text[1:len(resp.text)-2].replace(" ", "").replace("\"", "").replace(",", "").splitlines()
-            NameOfMatch = '2023mitry_' + str(match)
-            if (NameOfMatch in tmp):
-                print(NameOfMatch)
-                url = "https://www.thebluealliance.com/api/v3/match/" + NameOfMatch +"/simple"
-                headers = {
-                    'X-TBA-Auth-Key': 'TVv0BAIOlUYFeIMLBmOV0BLHqvhYCexcSmnIGLTsOmHdEGoy9fBqK3z0FQfygqZb',
-                    'accept': 'application/json'
-                }
-                resp = rq.get(url, headers=headers)
-                data = json.loads(resp.text)
-                redRaw = data["alliances"]["red"]["team_keys"]
-                blueRaw = data["alliances"]["blue"]["team_keys"]
-                red = [int(el.replace("frc", "")) for el in redRaw]
-                blue = [int(el.replace("frc", "")) for el in blueRaw]
-                print(red)
-                print(blue)
-            if self.overide:
-                red = [67, 67, 67]
-                blue = [67, 67, 67]
+            con = sqlite3.connect("matches.db")
+            cursor = con.cursor()
+            res = cursor.execute(f"SELECT * FROM matches WHERE matchNum = {match}")
+            teams = res.fetchall()[0][1:]
+            red = [teams[0], teams[1], teams[2]]
+            blue = [teams[3], teams[4], teams[5]]
+            
             generatePitSheet(match, blue, red).generateSheet()
 
     def checkValid(self, path):
