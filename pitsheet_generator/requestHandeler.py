@@ -6,6 +6,7 @@ import requests as rq
 import json
 import sys
 import sqlite3
+import gettingData
 
 
 class requests:
@@ -14,16 +15,23 @@ class requests:
 
         self.dir_list = os.listdir()
         self.overide = True
+        self.gettingData = gettingData.gettingTBAData()
 
     def refresh(self, eventCode):
         # event code example: 2023mimil
+        var = self.gettingData.getData(eventCode)
+        if (type(var) == int):
+            print("failed")
+        else:
+            print("succeded")
+
         return None
 
-    def start(self, match, jsonPath):
+    def start(self, match, jsonPath, eventCode):
         self.checkValid(jsonPath)
 
         if self.isValid:
-            con = sqlite3.connect("matches.db")
+            con = sqlite3.connect(f"{eventCode}.db")
             cursor = con.cursor()
             res = cursor.execute(f"SELECT * FROM matches WHERE matchNum = {match}")
             teams = res.fetchall()[0][1:]
