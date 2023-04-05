@@ -63,7 +63,7 @@ class interface(tk.Tk):
 
         sub_btn.place(x=100, y=70)
 
-        ref_entry.place(x=90, y=110)
+        self.ref_entry.place(x=90, y=110)
         ref_btn.place(x=15, y=105)
 
         self.loadingBar(0)
