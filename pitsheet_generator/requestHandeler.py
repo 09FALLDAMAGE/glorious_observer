@@ -14,7 +14,7 @@ class requests:
         self.isValid = False
 
         self.dir_list = os.listdir()
-        self.overide = True
+        self.overide = False
         self.gettingData = gettingData.gettingTBAData()
 
     def refresh(self, eventCode):

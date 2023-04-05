@@ -28,13 +28,13 @@ class interface(tk.Tk):
         # self.canvas.create_rectangle(10, 110, 10 + (barState * 5), 130, fill='light green')
 
     def getMatches(self):
-        requests().refresh(self.ref_entry.get())
+        requests().refresh(self.eventCode.get())
 
     def submit(self):
         matchReq = self.match_var.get()
         JsonReq = self.json_var.get()
 
-        requests().start(matchReq, JsonReq, self.ref_entry.get())
+        requests().start(matchReq, JsonReq, self.eventCode.get())
 
         self.match_var.set("")
 
@@ -49,7 +49,7 @@ class interface(tk.Tk):
 
         sub_btn = tk.Button(self, text='generate', command=self.submit)
 
-        self.ref_entry = tk.Entry(self, textvariable=self.eventCode, font=('calibre', 10, 'normal'))
+        ref_entry = tk.Entry(self, textvariable=self.eventCode, font=('calibre', 10, 'normal'))
 
         ref_btn = tk.Button(self, text='refresh', command=self.getMatches)
 
@@ -63,7 +63,7 @@ class interface(tk.Tk):
 
         sub_btn.place(x=100, y=70)
 
-        self.ref_entry.place(x=90, y=110)
+        ref_entry.place(x=90, y=110)
         ref_btn.place(x=15, y=105)
 
         self.loadingBar(0)
