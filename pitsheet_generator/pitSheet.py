@@ -145,35 +145,25 @@ class generatePitSheet(tk.Tk):
 
         self.canvas.create_text(517.5, 145, text='Auton Points', font=('Arial', '15'))
 
-        self.canvas.create_rectangle(310, 200 + 150, 310 + (teamDat["Teleop Cubes Blue"] * constants.barMult),
+        self.canvas.create_rectangle(310, 200 + 150, 310 + (teamDat["Teleop Points Blue"] * constants.barMult),
                                      175 + 150, fill=color)
-        self.canvas.create_text(700, 177 + 150, text=round(teamDat["Teleop Cubes Blue"], 2), font=('Arial', '15'))
+        self.canvas.create_text(700, 177 + 150, text=round(teamDat["Teleop Points Blue"], 2), font=('Arial', '15'))
 
-        self.canvas.create_rectangle(310, 210 + 150, 310 + (teamDat["Teleop Cubes Red"] * constants.barMult), 235 + 150,
+        self.canvas.create_rectangle(310, 210 + 150, 310 + (teamDat["Teleop Points Red"] * constants.barMult), 235 + 150,
                                      fill=color2)
-        self.canvas.create_text(700, 222.5 + 150, text=round(teamDat["Teleop Cubes Red"], 2), font=('Arial', '15'))
+        self.canvas.create_text(700, 222.5 + 150, text=round(teamDat["Teleop Points Red"], 2), font=('Arial', '15'))
 
-        self.canvas.create_text(517.5, 145 + 150, text='Teleop Cubes', font=('Arial', 15))
+        self.canvas.create_text(517.5, 145 + 150, text='Teleop Points', font=('Arial', 15))
 
-        self.canvas.create_rectangle(310, 200 + 300, 310 + (teamDat["Teleop Cones Blue"] * constants.barMult),
-                                     175 + 300, fill=color)
-        self.canvas.create_text(700, 177 + 300, text=round(teamDat["Teleop Cones Blue"], 2), font=('Arial', '15'))
-
-        self.canvas.create_rectangle(310, 210 + 300, 310 + (teamDat["Teleop Cones Red"] * constants.barMult), 235 + 300,
-                                     fill=color2)
-        self.canvas.create_text(700, 222.5 + 300, text=round(teamDat["Teleop Cones Red"], 2), font=('Arial', '15'))
-
-        self.canvas.create_text(517.5, 145 + 300, text='Teleop Cones', font=('Arial', '15'))
-
-        self.canvas.create_rectangle(310, 200 + 450, 310 + (teamDat["Endgame Blue"] * constants.barMult), 175 + 450,
+        self.canvas.create_rectangle(310, 200 + 300, 310 + (teamDat["Endgame Blue"] * constants.barMult), 175 + 300,
                                      fill=color)
-        self.canvas.create_text(700, 177 + 450, text=round(teamDat["Endgame Blue"], 2), font=('Arial', '15'))
+        self.canvas.create_text(700, 177 + 300, text=round(teamDat["Endgame Blue"], 2), font=('Arial', '15'))
 
-        self.canvas.create_rectangle(310, 210 + 450, 310 + (teamDat["Endgame Red"] * constants.barMult), 235 + 450,
+        self.canvas.create_rectangle(310, 210 + 300, 310 + (teamDat["Endgame Red"] * constants.barMult), 235 + 300,
                                      fill=color2)
-        self.canvas.create_text(700, 222.5 + 450, text=round(teamDat["Endgame Red"], 2), font=('Arial', '15'))
+        self.canvas.create_text(700, 222.5 + 300, text=round(teamDat["Endgame Red"], 2), font=('Arial', '15'))
 
-        self.canvas.create_text(517.5, 145 + 450, text='Endgame', font=('Arial', '15'))
+        self.canvas.create_text(517.5, 145 + 300, text='Endgame', font=('Arial', '15'))
 
     def teamcard(self, padding, segmentHeight, segmentWidth, segmentPadding, topPadding, offset, teamBoxOffsetx,
                  teamBoxOffsety,
@@ -220,7 +210,7 @@ class generatePitSheet(tk.Tk):
         try:
             a = 0
             for j in range(3):
-                for k in range(4):
+                for k in range(3):
                     a += round(makeDict(teams[j])[f'{constants.totalPrefixes[k]}{code}'])
 
             return a
@@ -245,14 +235,10 @@ class generatePitSheet(tk.Tk):
         # interface.interface().loadingBar(1)
         matchData = {
             "Auton Points Blue": self.B1['Auton Point Avg'] + self.B2['Auton Point Avg'] + self.B3['Auton Point Avg'],
-            "Teleop Cubes Blue": self.B1['Teleop Cubes Avg'] + self.B2['Teleop Cubes Avg'] + self.B3[
-                'Teleop Cubes Avg'],
-            "Teleop Cones Blue": self.B1['Teleop Cones Avg'] + self.B2['Teleop Cones Avg'] + self.B3[
-                'Teleop Cones Avg'],
+            "Teleop Points Blue": self.B1['Teleop Point Avg'] + self.B2['Teleop Point Avg'] + self.B3['Teleop Point Avg'],
             "Endgame Blue": self.B1['Endgame Point Avg'] + self.B2['Endgame Point Avg'] + self.B3['Endgame Point Avg'],
             "Auton Points Red": self.R1['Auton Point Avg'] + self.R2['Auton Point Avg'] + self.R3['Auton Point Avg'],
-            "Teleop Cubes Red": self.R1['Teleop Cubes Avg'] + self.R2['Teleop Cubes Avg'] + self.R3['Teleop Cubes Avg'],
-            "Teleop Cones Red": self.R1['Teleop Cones Avg'] + self.R2['Teleop Cones Avg'] + self.R3['Teleop Cones Avg'],
+            "Teleop Points Red": self.R1['Teleop Point Avg'] + self.R2['Teleop Point Avg'] + self.R3['Teleop Point Avg'],
             "Endgame Red": self.R1['Endgame Point Avg'] + self.R2['Endgame Point Avg'] + self.R3['Endgame Point Avg']}
         # interface.interface().loadingBar(10)
         self.canvas.create_text(517.5, 70, text=f'Match {self.matchNumber.upper()}', font=('Arial', '20'))

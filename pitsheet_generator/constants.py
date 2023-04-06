@@ -38,7 +38,7 @@ class constants:
 
     prefixes = ['Auton Point ', 'Auton Piece ', 'Teleop Point ', 'Teleop Cubes ', 'Endgame Point ']
     # dictionary prefixes used in teamcard
-    totalPrefixes = ['Auton Point ', 'Teleop Cones ', 'Teleop Cubes ', 'Endgame Point ', 'Auton Point ']
+    totalPrefixes = ['Auton Point ', 'Teleop Point ', 'Endgame Point ']
 
     suffixes = ['Low', 'Avg', 'High']
 
