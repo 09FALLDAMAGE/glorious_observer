@@ -1,7 +1,11 @@
 class constants:
     defaultJson = 'attempt.json'
 
+    defaultEvent = '2023mimil'
+
     jsonName = defaultJson
+
+    eventName = defaultEvent
 
     h = 6
     # high cone/cube point value auton
@@ -36,7 +40,7 @@ class constants:
     barMult = 6
     # bar multipliers
 
-    prefixes = ['Auton Point ', 'Auton Piece ', 'Teleop Point ', 'Teleop Cubes ', 'Endgame Point ']
+    prefixes = ['Auton Point ', 'Auton Piece ', 'Teleop Point ', 'Teleop Piece ', 'Endgame Point ']
     # dictionary prefixes used in teamcard
     totalPrefixes = ['Auton Point ', 'Teleop Point ', 'Endgame Point ']
 
@@ -51,4 +55,7 @@ class constants:
 
     def setJsonName(self, jsoner):
         jsonName = jsoner
+
+    def setEventCode(self, eventer):
+        eventName = eventer
 
