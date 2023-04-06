@@ -21,20 +21,14 @@ class interface(tk.Tk):
         self.canvas = Canvas(self, width=250, height=140)
         self.canvas.pack()
 
-        # self.canvas.create_rectangle(10, 110, 240, 130, fill='red')
-
-    def loadingBar(self, barState):
-        old = True
-        # self.canvas.create_rectangle(10, 110, 10 + (barState * 5), 130, fill='light green')
-
     def getMatches(self):
-        requests.refresh(self.eventCode.get())
+        requests().refresh(self.eventCode.get())
 
     def submit(self):
         matchReq = self.match_var.get()
         JsonReq = self.json_var.get()
 
-        requests().start(matchReq, JsonReq)
+        requests().start(matchReq, JsonReq, self.eventCode.get())
 
         self.match_var.set("")
 
@@ -65,8 +59,6 @@ class interface(tk.Tk):
 
         ref_entry.place(x=90, y=110)
         ref_btn.place(x=15, y=105)
-
-        self.loadingBar(0)
 
         # match_label.grid(row=0, column=0)
         # match_entry.grid(row=0, column=1)
