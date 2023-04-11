@@ -248,7 +248,7 @@ def scrapePoints(teamNumber):
     elif dat[1]['Endgame Ending Position'][0] != 0:
         dat[0]['Endgame Point'] = constants.e1
     else:
-        dat[0]['Endgame Point'] = 9999
+        dat[0]['Endgame Point'] = 0
 
     return dat
 

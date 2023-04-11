@@ -7,6 +7,7 @@ import json
 import sys
 import sqlite3
 import gettingData
+from constants import constants
 
 
 class requests:
@@ -29,6 +30,8 @@ class requests:
 
     def start(self, match, jsonPath, eventCode):
         self.checkValid(jsonPath)
+        if (eventCode == "" or type(eventCode)!= str):
+            eventCode = constants.eventName
 
         if self.isValid:
             if not self.overide:
@@ -39,8 +42,8 @@ class requests:
                 red = [teams[0], teams[1], teams[2]]
                 blue = [teams[3], teams[4], teams[5]]
             else:
-                red = [67, 67, 67]
-                blue = [67, 67, 67]
+                red = [67, 7174, 5050]
+                blue = [9312,	8608,	3603]
             
             generatePitSheet(match, blue, red).generateSheet()
 

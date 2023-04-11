@@ -1,7 +1,7 @@
 class constants:
-    defaultJson = 'attempt.json'
+    defaultJson = '2023States.json'
 
-    defaultEvent = '2023mimil'
+    defaultEvent = '2023micmp3'
 
     jsonName = defaultJson
 
@@ -12,7 +12,7 @@ class constants:
     m = 4
     # medium cube/cone point value auton
     l = 3
-    # low cone/cube point value auton
+    # low cone/cube point value autoni
 
     h1 = 5
     # high cone/cube point value teleop
@@ -37,7 +37,7 @@ class constants:
     # engage in endgame
 
 
-    barMult = 6
+    barMult = 5
     # bar multipliers
 
     prefixes = ['Auton Point ', 'Auton Piece ', 'Teleop Point ', 'Teleop Piece ', 'Endgame Point ']
