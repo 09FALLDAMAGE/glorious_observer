@@ -12,7 +12,7 @@ from jsonInterpreter2 import makeDict
 import io
 from dataTables import dataTables
 import interface
-import ghostscript
+# import ghostscript
 
 
 class generatePitSheet(tk.Tk):
