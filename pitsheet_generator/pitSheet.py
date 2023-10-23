@@ -259,11 +259,15 @@ class generatePitSheet(tk.Tk):
         # interface.interface().loadingBar(24)
         self.canvas.postscript(colormode='color', x=0, y=0, height=self.geo[1], width=self.geo[0], file='the.ps')
 
-        from PIL import Image as balls
 
-        psimage = balls.open('the.ps')
-        psimage.save('the.jpeg')
-        # os.startfile('the.ps', "print")
+        # useable if you fix ghostscript depreciation
+        # from PIL import Image as balls
+        #
+        # psimage = balls.open('the.ps')
+        # psimage.save('the.jpeg')
+
+
+        # # os.startfile('the.ps', "print")
 
         self.mainloop()
 

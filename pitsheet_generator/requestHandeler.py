@@ -15,7 +15,7 @@ class requests:
         self.isValid = False
 
         self.dir_list = os.listdir()
-        self.overide = True
+        self.overide = False
         self.gettingData = gettingData.gettingTBAData()
 
     def refresh(self, eventCode):
@@ -24,7 +24,7 @@ class requests:
         if (type(var) == int):
             print("failed")
         else:
-            print("succeded")
+            print("succeeded")
 
         return None
 
